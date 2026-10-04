@@ -1,0 +1,13 @@
+{{!-- Site header: the way home, plus the guitar/piano switch on pages that need it. --}}
+<nav class="topbar">
+  {{#if home}}
+  <span class="home">How music works</span>
+  {{else}}
+  <a class="home" href="index.html">How music works</a>
+  {{/if}}
+  {{#if instrument}}
+  <span>Show for</span>
+  <button type="button" data-instrument-choice="guitar">Guitar</button>
+  <button type="button" data-instrument-choice="piano">Piano</button>
+  {{/if}}
+</nav>

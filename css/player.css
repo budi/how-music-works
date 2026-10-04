@@ -1,0 +1,57 @@
+/*
+ * player.css — controls for anything that plays: Play / Stop, tempo,
+ * metronome, count-in (beats-101's exercises, the number system's progression
+ * builder), and the small round play button on a chord (js/chord-sound.js).
+ */
+
+.rhythm-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; font-size: 13px; }
+.rhythm-play {
+  min-width: 72px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  cursor: pointer;
+}
+.rhythm-play[aria-pressed="true"] { background: var(--now); border-color: var(--now); }
+.rhythm-tempo { display: flex; align-items: center; gap: 8px; color: var(--soft); }
+.rhythm-tempo span { min-width: 4.5em; white-space: nowrap; }
+.rhythm-tempo input { width: 140px; accent-color: var(--ink); }
+.rhythm-check { display: flex; align-items: center; gap: 5px; color: var(--soft); cursor: pointer; }
+.rhythm-check input { accent-color: var(--ink); }
+.rhythm-select { display: flex; align-items: center; gap: 6px; color: var(--soft); }
+.rhythm-select select { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 3px 4px; }
+.rhythm-status { font-size: 20px; font-weight: 650; color: var(--now); min-width: 1.2em; }
+
+/* ---------- one chord ---------- */
+
+/* top right corner of whatever chord it sits in (which needs position: relative) */
+.chord-play {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  opacity: .8;
+}
+.chord-play svg { width: 10px; height: 10px; fill: currentColor; margin-left: 1px; }
+.chord-play:hover, .chord-play:focus-visible { opacity: 1; }
+.chord-play.is-sounding { background: var(--now); opacity: 1; }
+/* a bigger target for fingers */
+@media (pointer: coarse) {
+  .chord-play { width: 30px; height: 30px; top: 2px; right: 2px; }
+}
+
+@media print {
+  .rhythm-controls, .chord-play { display: none; }
+}

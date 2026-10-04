@@ -1,0 +1,37 @@
+name: Something doesn't work
+description: A page that breaks, plays the wrong thing, or looks wrong.
+labels: [bug]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: Its address, or its name and the section.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to see it
+      placeholder: |
+        1. Open the sight-reading quiz
+        2. Choose Swing hard
+        3. Press Play
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: Safari on an iPhone, Firefox on Windows…
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Screenshots, or errors from the browser's console.

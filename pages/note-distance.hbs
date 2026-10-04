@@ -1,0 +1,109 @@
+{{#> layout
+    title="Note distance — hearing, seeing and singing the gaps between notes"
+    styles=(list "player" "note-distance")
+    script="note-distance"}}
+
+{{#*inline "footer-note"}}
+  Every note is made in your browser — turn the volume down a little before your first Play.
+{{/inline}}
+
+<noscript><p class="noscript">The diagrams and exercises on this page are drawn and played with JavaScript — please turn it on.</p></noscript>
+
+<h1>Note distance</h1>
+<p class="lede">Every melody is a chain of distances: up a little, down a lot, back home. This page measures those distances in half steps and whole steps,
+draws them so you can see them, and gives you exercises to sing them until you can feel them without counting.
+Everything stays inside one octave — do re mi fa sol la ti do — the range almost any voice can sing.</p>
+
+<h2>Your do</h2>
+<p>Pick a do you can sing comfortably, with the do an octave above it still in reach. Every exercise on the page starts from it. Most men’s voices are comfortable with a do around C3 to F3; most women’s and children’s around A3 to C4. Middle C is C4. Picking one plays it, with the do above it.</p>
+<div class="your-do" id="your-do"></div>
+
+
+<!-- ================================================================== -->
+<h2>Half steps and whole steps</h2>
+<p>The smallest distance in Western music is the <b>half step</b>, or <b>semitone</b>: from one key on a piano to the very next one, black or white,
+or from one fret on a guitar to the next. Two half steps make a <b>whole step</b>, or <b>tone</b>.</p>
+<p>The black keys are the half steps in between. Each one is named after its neighbours: the black key just above C is <b>C♯</b>
+(C sharp, a half step up from C), and the same key is <b>D♭</b> (D flat, a half step down from D) — one key, two names.
+So C to D is a whole step that passes over a black key: C to C♯ is one half step, C♯ to D the other.</p>
+<div class="keyboard-wrap keys" data-do="C"></div>
+<p>Most white keys have a black key between them, so they are a whole step apart. Two pairs don't: E to F and B to C are only a half step apart,
+because there is no key between them. Sung from C, those are mi to fa and ti to do — the two places where the scale takes a small step.
+That is why the scale from C needs only white keys: its two half steps land exactly where the white keys are already a half step apart.</p>
+<p>Start do anywhere else and the same steps need black keys. From D, a whole step up from E has to skip F and land on the black key <b>F♯</b>,
+and the whole step up from B lands on <b>C♯</b>, so that ti is still a half step below high do:</p>
+<div class="keyboard-wrap keys" data-do="D"></div>
+<p>The keys change, but the distances don’t — whole, whole, half, whole, whole, whole, half. That is why do re mi sounds the same from any do,
+and why the exercises below work wherever you put yours.</p>
+
+
+<!-- ================================================================== -->
+<h2>The major scale is a staircase</h2>
+<p>Draw each note as high as it sounds and the scale becomes a staircase with two short stairs in it. Going up from do the steps are
+<b>whole, whole, half, whole, whole, whole, half</b> (W W H W W W H). Every major scale has exactly this shape; only the starting note changes.</p>
+<div class="staircase-wrap" id="staircase"></div>
+
+
+<!-- ================================================================== -->
+<h2>How far from do</h2>
+<p>Add up the stairs and you get the distance from do to every note of the scale. The names on the right are what musicians call each distance;
+the songs are a quick way to remember how it sounds, if you know them: the jump comes at the words in brackets, or right at the start.</p>
+<div class="scroller">
+  <table class="from-do" id="from-do"
+    data-song2="“Happy Birthday” (“-py Birth-”)"
+    data-song3="“When the Saints Go Marching In” (“Oh when”)"
+    data-song4="“Here Comes the Bride”"
+    data-song5="“Twinkle, Twinkle, Little Star” (“-kle, twin-”)"
+    data-song6="“My Bonnie Lies over the Ocean” (“My Bon-”)"
+    data-song7="“Over the Rainbow”, from “Some-” to “o-” (up the octave, then down a half step)"
+    data-song8="“Over the Rainbow” (“Some-where”)"></table>
+</div>
+<p>Notice the gaps: there is nothing 1, 3, 6, 8 or 10 semitones from do in the scale. Those distances appear between other pairs of notes instead —
+mi up to fa is 1, re up to fa is 3, fa up to ti is 6.</p>
+
+
+<!-- ================================================================== -->
+<h2>Sing the distances</h2>
+<p>Each exercise plays a pattern on piano and loops until you stop it. The ladder beside it has a rung for every semitone of the octave, so a jump
+of four semitones looks twice as long as a jump of two; the arrow shows the jump you are hearing and its size.</p>
+<ol class="notes">
+  <li>Listen once. Then play it again and sing along on the syllables — do, re, do, mi — not on “la” or a hum: the syllables are what tie the sound to its place in the scale.</li>
+  <li>Watch the ladder while you sing, and say the size of each jump to yourself. Over time the number and the feeling become one thing.</li>
+  <li>Tick <b>Gap to sing it back</b>: the piano plays a pair, then leaves the same time for you to sing it alone.</li>
+  <li>Slow it down whenever a jump goes out of tune. Accuracy first; speed comes by itself.</li>
+</ol>
+
+{{> interval-exercise name="Walk the scale" note="Up one stair at a time, then down. Feel how short mi–fa and ti–do are." pattern="1 2 3 4 5 6 7 8 8 7 6 5 4 3 2 1" group=8 tempo=80}}
+{{> interval-exercise name="Leaps up from do" note="Always back to do, then a little further each time: up 2, up 4, up 5, up 7, up 9, up 11, up 12." pattern="1 2 1 3 1 4 1 5 1 6 1 7 1 8" tempo=80}}
+{{> interval-exercise name="Leaps down from high do" note="The same distances, falling: from high do down 1, 3, 5, 7, 8, 10 and 12 semitones." pattern="8 7 8 6 8 5 8 4 8 3 8 2 8 1" tempo=80}}
+{{> interval-exercise name="In thirds" note="Skip one note each time. Some thirds are 4 semitones, some only 3 — listen for which." pattern="1 3 2 4 3 5 4 6 5 7 6 8 8 6 7 5 6 4 5 3 4 2 3 1" tempo=80}}
+
+
+<!-- ================================================================== -->
+<h2>Ear check</h2>
+<p>The other way round: hear two notes and name the second one. The first is always do (or high do, going down), played from your do;
+when you get it, the answer shows how far apart the two notes are.</p>
+<div class="ear-check" id="ear-check"></div>
+
+
+<!-- ================================================================== -->
+<h2>Practise it</h2>
+<p>A few minutes a day, every day, does more than a long session once a week. Work down the list; each step builds on the one before.</p>
+<ol class="notes">
+  <li>Sing “Walk the scale” with the piano until mi–fa and ti–do sound obviously smaller than the other steps.</li>
+  <li>Take one leap exercise a day. Sing it with the piano, then with the gap, then try the first pair without any help and check yourself against the piano.</li>
+  <li>Away from the page, sing do and then any note of the scale — say do up to la — and count the semitones on your fingers while you hold it.</li>
+  <li>Do the ear check going up until you get most right first time, then switch to going down.</li>
+  <li>Test yourself without looking: how many semitones is do up to sol? Re up to fa? Ti up to do? Which two steps of the major scale are half steps?
+    <details><summary>Answers</summary>7 · 3 · 1 · mi–fa and ti–do.</details></li>
+</ol>
+
+<h2>Worth remembering</h2>
+<ul class="notes">
+  <li>A half step (semitone) is the next key on a piano or the next fret on a guitar; a whole step is two.</li>
+  <li>The major scale goes whole, whole, half, whole, whole, whole, half — the half steps are mi–fa and ti–do.</li>
+  <li>From do: re 2, mi 4, fa 5, sol 7, la 9, ti 11, do 12 semitones.</li>
+  <li>Thirds come in two sizes: 4 semitones (major) and 3 (minor). That one semitone is the difference between a major and a minor chord.</li>
+</ul>
+
+{{/layout}}

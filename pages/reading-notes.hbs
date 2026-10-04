@@ -1,0 +1,131 @@
+{{#> layout
+    title="Reading notes — the staff, treble and bass clef, ledger lines"
+    styles=(list "player" "reading-notes")
+    script="reading-notes"}}
+
+{{#*inline "footer-note"}}
+  Every note is made in your browser — turn the volume down a little before your first Play.
+{{/inline}}
+
+<noscript><p class="noscript">The staves and the quiz on this page are drawn and played with JavaScript — please turn it on.</p></noscript>
+
+<h1>Reading notes</h1>
+<p class="lede">Written music shows pitch by height: the higher a note sits on the staff, the higher it sounds.
+This page names every line and space in the treble and bass clefs, joins them into the grand staff that piano music uses,
+goes beyond the staff with ledger lines, and adds sharps and flats. Tap any note to hear it, then finish with the quiz.</p>
+
+
+<!-- ================================================================== -->
+<h2>The staff</h2>
+<p>A <b>staff</b> is five lines and the four spaces between them. Notes sit on a line or in a space, and each step up —
+line to space, space to line — is the next letter of the musical alphabet. There are only seven letters, A B C D E F G;
+after G comes A again, one octave higher.</p>
+{{> staff clef="treble" notes="C4 D4 E4 F4 G4 A4 B4 C5" name="One step at a time" note="From middle C up to the next C: every step, line to space, is the next letter. (The first C sits on a short extra line of its own — more on that below.)"}}
+<figure class="keys-fig" data-from="C4" data-to="C5" data-marks="C4 D4 E4 F4 G4 A4 B4 C5" data-highlight="C4">
+  <figcaption><b>The same notes on the piano</b><span>Middle C up to the next C: the white keys, left to right. Tap them to hear.</span></figcaption>
+  <div class="keys-art"></div>
+</figure>
+<p>The sign at the start is a <b>clef</b>. On its own a staff only says “higher” and “lower”; the clef says which line is which note.</p>
+
+
+<!-- ================================================================== -->
+<h2>The treble clef</h2>
+<p>The treble clef is also called the <b>G clef</b>: its curl wraps around the second line, and marks it as the G above middle C.
+It is the clef for higher sounds: the right hand on piano, voices, violin, flute — and guitar, which is written in treble clef
+an octave higher than it sounds, to keep it on the staff.</p>
+{{> staff clef="treble" notes="E4 G4 B4 D5 F5" name="The lines: E G B D F" note="Every Good Boy Does Fine."}}
+{{> staff clef="treble" notes="F4 A4 C5 E5" name="The spaces: F A C E" note="They spell FACE."}}
+
+
+<!-- ================================================================== -->
+<h2>The bass clef</h2>
+<p>The bass clef is the <b>F clef</b>: its two dots sit either side of the fourth line, marking it as the F below middle C.
+It is the clef for lower sounds: the left hand on piano, bass guitar, cello, trombone and low voices.</p>
+{{> staff clef="bass" notes="G2 B2 D3 F3 A3" name="The lines: G B D F A" note="Good Boys Do Fine Always."}}
+{{> staff clef="bass" notes="A2 C3 E3 G3" name="The spaces: A C E G" note="All Cows Eat Grass."}}
+<p>The same line has a different name in each clef: the bottom line is E in treble but G in bass. Learn each clef as its own map;
+don’t try to translate one into the other.</p>
+
+
+<!-- ================================================================== -->
+<h2>Middle C and the grand staff</h2>
+<p>Piano music needs both clefs at once, so it joins a treble staff and a bass staff with a brace: the <b>grand staff</b>.
+Usually the right hand reads the top staff and the left hand the bottom one.</p>
+<p>Between them sits <b>middle C</b>, the C near the middle of the piano. It is written on a short line of its own — one line
+below the treble staff, or one line above the bass staff. Both are the same key. Notes carry on smoothly across the gap: B just
+below middle C, D just above it.</p>
+{{> staff clef="grand" notes="A3@b B3@b C4@b C4@t D4@t E4@t" labels="names" name="Across the middle" note="Middle C written both ways — the same note."}}
+<p>The numbers name the octave. Middle C is <b>C4</b>; each octave counts up from C, so the B just below it is B3 and the D just above it is D4.
+It’s the same naming the <a href="note-distance.html">note distance</a> page uses for your do.</p>
+
+
+<!-- ================================================================== -->
+<h2>Ledger lines</h2>
+<p>When a note goes above or below the staff, it gets <b>ledger lines</b>: short extra lines drawn just for that note, as if the staff carried on.
+Keep counting line, space, line from the staff and the letters keep going too. Middle C is simply the first ledger line below the treble staff.</p>
+{{> staff clef="treble" notes="C4 B3 A3 G3 A5 B5 C6 D6" labels="names" name="Treble, below and above" note="Down from middle C, then up from the A above the staff."}}
+{{> staff clef="bass" notes="E2 D2 C2 B3 C4 D4 E4" labels="names" name="Bass, below and above" note="Down from E, then up to middle C and beyond."}}
+<p>A few ledger lines are easy to read; many are not. When music climbs far above the staff, it is often written an octave lower
+with <i>8va</i> above it, meaning “play this an octave higher”.</p>
+
+
+<!-- ================================================================== -->
+<h2>Sharps, flats and naturals</h2>
+<p>The lines and spaces name the white keys. The black keys borrow a neighbour’s position and add a sign in front of the note:</p>
+<ul class="notes">
+  <li><b>♯ sharp</b> raises the note a half step: F♯ is the key just above F.</li>
+  <li><b>♭ flat</b> lowers it a half step: B♭ is the key just below B.</li>
+  <li><b>♮ natural</b> cancels a sharp or flat: back to the plain note.</li>
+</ul>
+{{> staff clef="treble" notes="F4 F#4 B4 Bb4 Bn4 C5" name="Signs in front" note="F, F sharp · B, B flat, B natural · C."}}
+<p>A sharp or flat lasts until the end of the bar, for that line or space. Many pieces put the sharps or flats they use all the time
+at the very start of each staff instead — the <b>key signature</b> — which is the subject of another page.</p>
+
+
+<!-- ================================================================== -->
+<h2>Landmark notes</h2>
+<p>Nobody reads notes by counting up from the bottom line every time. Learn a handful of landmarks instead, and read every other note
+as a step or two away from the nearest one: the G the treble clef curls around, the F between the bass clef’s dots, middle C,
+and the Cs an octave either side of it.</p>
+{{> staff clef="grand" notes="C3@b F3@b C4@b C4@t G4@t C5@t" labels="names" name="Landmarks" note="Bass C and F, middle C, treble G and C."}}
+<p>The same landmarks on the piano. The black keys come in groups of two and three, and every C is the white key just to the left
+of a group of two — that’s how to find any C without counting. Middle C is the C nearest the middle of the keyboard: on a full
+88-key piano it is the fourth C from the left, roughly in front of you when you sit at the centre. Tap the keys to hear them.</p>
+<figure class="keys-fig" data-from="C3" data-to="C5" data-marks="C3 F3 C4 G4 C5" data-highlight="C4">
+  <figcaption><b>Landmarks on the keys</b><span>Each C sits just left of two black keys. Middle C is in red.</span></figcaption>
+  <div class="keys-art"></div>
+</figure>
+
+
+<!-- ================================================================== -->
+<h2>Name the note</h2>
+<p>A note appears; press its key on the keyboard below — the right key in the right octave, with middle C marked to start from.
+Notes can be anywhere on the staff or up to three ledger lines beyond it, and each clef gets the keys it covers.
+Start with the treble clef, then the bass clef, then both; tick <b>Sharps and flats</b> once the white keys feel easy.
+Speed comes from the landmarks: find the nearest one and count.</p>
+<div class="note-quiz" id="note-quiz"></div>
+
+
+<!-- ================================================================== -->
+<h2>Practise it</h2>
+<p>A few minutes a day, every day, does more than a long session once a week. Work down the list; each step builds on the one before.</p>
+<ol class="notes">
+  <li>Say the treble lines and spaces out loud, bottom to top, until you don’t need the sentences: E G B D F, F A C E.</li>
+  <li>Do the same for bass: G B D F A, A C E G.</li>
+  <li>Run the quiz on one clef until you get ten in a row, then switch to the other clef, then to both.</li>
+  <li>Ledger-line notes take longest at first. Read them by counting from the staff, or from middle C, until you know them on sight.</li>
+  <li>Take any simple piece and name every note before you play it. Then play it while saying the names.</li>
+  <li>Test yourself without looking: which note is on the middle line of the treble staff? On the top line of the bass staff?
+  Where is middle C in each clef?
+    <details><summary>Answers</summary>B · A · on the first ledger line below the treble staff, or the first ledger line above the bass staff.</details></li>
+</ol>
+
+<h2>Worth remembering</h2>
+<ul class="notes">
+  <li>Higher on the staff sounds higher. Each step, line to space, is the next letter: A B C D E F G, then A again.</li>
+  <li>Treble clef: lines E G B D F, spaces F A C E; the curl marks G. Bass clef: lines G B D F A, spaces A C E G; the dots mark F.</li>
+  <li>Middle C (C4) is one ledger line below the treble staff or one above the bass staff — the same key.</li>
+  <li>♯ raises a half step, ♭ lowers a half step, ♮ cancels; each lasts to the end of the bar.</li>
+</ul>
+
+{{/layout}}

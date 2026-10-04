@@ -1,0 +1,395 @@
+/*
+ * number-system.css — layout for number-system.html only.
+ * Sections: the row of seven, the key table, the circle of fifths,
+ * the progression builder.
+ */
+
+/* ======================================================================
+ * The row of seven (1 2m 3m 4 5 6m 7°)
+ * ==================================================================== */
+
+.spine {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 0 0 8px;
+}
+.slot {
+  background: var(--card);
+  border-top: 5px solid var(--q);
+  border-radius: 3px;
+  padding: 12px 6px 11px;
+  text-align: center;
+}
+.slot .num  { display: block; font-size: clamp(19px, 4.6vw, 30px); font-weight: 650; letter-spacing: -.01em; color: var(--q); }
+.slot .rom  { display: block; font-size: 12px; color: var(--soft); }
+.slot .qual { display: block; font-size: 10.5px; color: var(--soft); margin-top: 5px; }
+.spinenote  { font-size: 13px; color: var(--soft); margin: 0; }
+
+/* ======================================================================
+ * Every key, chord by chord
+ * ==================================================================== */
+
+.scroller {
+  overflow: auto;
+  max-height: 82vh;
+  max-height: 82dvh;
+  margin-top: 14px;
+  border-bottom: 1px solid var(--rule);
+  -webkit-overflow-scrolling: touch;
+}
+
+.key-table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 760px; }
+
+/* column headings: the numbers */
+.key-table thead th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--soft);
+  padding: 6px 0 7px;
+  text-align: center;
+  vertical-align: bottom;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.key-table thead th:first-child { text-align: left; left: 0; z-index: 4; }
+.key-table thead th .hn { display: block; font-size: 17px; font-weight: 650; line-height: 1.1; color: var(--q); }
+.key-table thead th .hr { display: block; font-size: 12px; color: var(--soft); }
+
+/* row headings: the keys */
+.key-table tbody th {
+  text-align: left;
+  font-weight: 650;
+  font-size: 18px;
+  width: 64px;
+  vertical-align: top;
+  padding: 0 10px 0 2px;
+  background: var(--paper);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  border-bottom: 1px solid var(--rule);
+}
+.key-table tbody th i { font-style: normal; font-size: 11px; color: var(--soft); display: block; line-height: 1; }
+
+/* chords */
+.key-table td {
+  padding: 8px 3px 6px;
+  text-align: center;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+.key-table td.q-dim { background: rgba(168, 69, 43, .05); }
+.key-table td, .cc, .xc, .shape { position: relative; } /* for the play button (player.css) */
+.key-table td .chord-play { top: 6px; right: 3px; width: 20px; height: 20px; }
+.key-table td .chord-play svg { width: 8px; height: 8px; }
+.key-table .ch { display: block; font-size: 16px; font-weight: 600; line-height: 1.15; color: var(--q); }
+.key-table .fr {
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--soft);
+  letter-spacing: .02em;
+  white-space: normal;
+}
+.key-table .art { display: block; margin: 2px auto 0; }
+.key-table .art svg { width: 88px; height: auto; margin: 0 auto; }
+.key-table .art.only-p svg { width: 100px; }
+
+@media (min-width: 900px) {
+  .scroller { max-height: none; overflow: visible; }
+  .key-table thead th { top: 50px; } /* below the sticky top bar */
+  .key-table .art svg { width: 96px; }
+  .key-table .art.only-p svg { width: 110px; }
+}
+
+/* ======================================================================
+ * Circle of fifths
+ * ==================================================================== */
+
+.cof { position: relative; margin-top: 14px; }
+
+/* The wheel turns by --rot (set from JS); keys and hub turn back the same
+   amount so their labels stay upright. */
+.wheel {
+  --rot: 0deg;
+  --spin: .6s var(--ease);
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 6px auto 24px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from -15deg, var(--rule) 0deg .6deg, transparent .6deg 30deg);
+  box-shadow: inset 0 0 0 1px var(--rule);
+  transform: rotate(var(--rot));
+  transition: transform var(--spin);
+}
+.wheel::before { content: ""; display: block; padding-top: 100%; } /* square */
+
+.ring {
+  position: absolute;
+  inset: 17%;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+.hub {
+  position: absolute;
+  inset: 33%;
+  z-index: 1;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(calc(-1 * var(--rot)));
+  transition: transform var(--spin);
+}
+.hub b  { font-size: 34px; line-height: 1; font-weight: 650; }
+.hub i  { font-style: normal; font-size: 15px; color: var(--soft); margin-top: 4px; }
+.hub em { font-style: normal; font-size: 9.5px; color: var(--soft); letter-spacing: .06em; text-transform: uppercase; margin-top: 6px; }
+
+.key {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transform: rotate(calc(-1 * var(--rot)));
+  transition: transform var(--spin), background .25s, color .25s, border-color .25s;
+}
+.key.maj { --q: var(--maj); width: 13%; height: 13%; margin: -6.5% 0 0 -6.5%; font-size: 17px; }
+.key.min { --q: var(--min); width: 10.5%; height: 10.5%; margin: -5.25% 0 0 -5.25%; font-size: 12px; color: var(--soft); }
+
+/* the selected key and its relative minor */
+.key.is-home { background: var(--q); border-color: var(--q); color: #fff; }
+/* its neighbours, the 4 and the 5 */
+.key.is-near { border-color: var(--q); border-width: 2px; color: var(--q); }
+
+/* number badge: 1, 4, 5 on the outside, 6m, 2m, 3m inside */
+.key[data-badge]::after {
+  content: attr(data-badge);
+  position: absolute;
+  top: -5px;
+  right: -7px;
+  font-size: 9.5px;
+  line-height: 1;
+  font-weight: 650;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 9px;
+  padding: 3px 5px 2px;
+}
+.key.min[data-badge]::after { background: var(--soft); }
+
+@media (max-width: 360px) {
+  .key.maj { font-size: 14px; }
+  .key.min { font-size: 10.5px; }
+  .hub b   { font-size: 28px; }
+}
+
+/* the panel for the selected key */
+.panels { max-width: 70ch; }
+.panel { background: var(--card); border-radius: 4px; padding: 16px 18px 6px; }
+.panel[hidden] { display: none; }
+.panel h3 { margin: 0 0 12px; font-size: 18px; font-weight: 650; }
+.panel h3 span { display: block; font-size: 13px; font-weight: 400; color: var(--soft); margin-top: 2px; }
+
+.cgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(74px, 1fr)); gap: 6px; margin-bottom: 14px; }
+.cc { background: var(--paper); border-radius: 3px; border-top: 3px solid var(--q); padding: 5px 3px 4px; text-align: center; min-width: 0; }
+.cc b   { display: block; font-size: 11px; font-weight: 600; color: var(--soft); line-height: 1.1; }
+.cc .cn { display: block; font-size: 14px; font-weight: 600; margin: 1px 0 2px; color: var(--q); }
+.cc svg { width: 100%; height: auto; }
+.cc .chord-play { top: 6px; right: 3px; width: 20px; height: 20px; }
+.cc .chord-play svg { width: 8px; height: 8px; }
+
+.minorline, .nextdoor { font-size: 14px; margin: 0 0 10px; }
+
+@media (min-width: 900px) {
+  .cof { display: grid; grid-template-columns: 420px 1fr; gap: 32px 48px; align-items: start; }
+  .wheel { max-width: 420px; margin: 6px 0 0; }
+  .panels { max-width: none; }
+}
+
+/* ======================================================================
+ * Progression builder
+ * ==================================================================== */
+
+/* Every toggle in the builder shows its state the same way. */
+.builder button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.builder button[aria-pressed="true"]:not(.vc) { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ----- layout: controls beside the result ----- */
+
+.xcontrols { background: var(--card); border-radius: 4px; padding: 2px 14px 14px; }
+.xmain { min-width: 0; } /* let wide rows scroll inside instead of stretching the page */
+
+@media (min-width: 900px) {
+  .xgrid { display: grid; grid-template-columns: 300px 1fr; gap: 0 32px; align-items: start; }
+  .xcontrols { position: sticky; top: 62px; } /* stays in reach while you scroll the choices */
+}
+
+/* ----- controls: key, chord numbers, add / remove ----- */
+
+.xsub { font-size: 11px; color: var(--soft); text-transform: uppercase; letter-spacing: .06em; margin: 14px 0 6px; }
+.xkeys { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-bottom: 14px; }
+.xslot { display: grid; grid-template-columns: 18px repeat(7, 1fr); gap: 4px; align-items: center; margin-bottom: 5px; }
+.xslot > span { font-size: 11px; color: var(--soft); text-align: right; }
+.xkeys button, .xslot button {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 0;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  user-select: none;
+  white-space: nowrap;
+  min-width: 0;
+}
+.xslot button { font-size: 12px; padding: 5px 0; }
+.xlines { display: flex; gap: 6px; margin-top: 4px; }
+.xadd, .xrem {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 0;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px dashed var(--soft);
+  background: none;
+}
+
+/* ----- one card per chord ----- */
+
+.xc {
+  background: var(--card);
+  border-radius: 4px;
+  padding: 10px 12px 8px;
+  border-left: 3px solid var(--q);
+}
+.xc h4 { margin: 0 0 8px; font-size: 15px; font-weight: 650; color: var(--q); }
+.xnum {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--soft);
+  margin-right: 8px;
+  padding: 1px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  vertical-align: 2px;
+}
+
+/* ----- the chart: one big cell per chord, in order ----- */
+
+.xhint { font-size: 12.5px; color: var(--soft); margin: 16px 0 6px; }
+.xchart { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 0 8px; margin: 0 0 6px; }
+.xcell { flex: 0 0 auto; }
+.xcell .xc { min-width: 160px; padding: 10px 8px 8px; }
+.xcell .chord-play { top: 8px; right: 8px; width: 28px; height: 28px; }
+.xcell .chord-play svg { width: 11px; height: 11px; }
+.xcell.is-now .xc { border-left-color: var(--now); box-shadow: 0 0 0 2px var(--now); } /* sounding now */
+.xplay { margin: 0 0 12px; }
+.xcell .xc h4 { font-size: 17px; margin-bottom: 6px; }
+.xcell .xnum { display: block; margin: 0 0 4px; width: max-content; }
+
+.cf { margin: 0; text-align: center; }
+.cf svg { margin: 0 auto; }
+.cf.only-g svg { width: 144px; height: auto; }
+.cf.only-p svg { width: auto; height: 94px; } /* same key size on every keyboard; wider chords get wider cards */
+.cf figcaption { font-size: 11px; color: var(--soft); margin-top: 4px; }
+.cf figcaption b { display: block; font-size: 13px; color: var(--ink); }
+
+/* ----- the choices: every flavour and shape of every chord ----- */
+
+.xstage { margin-top: 12px; }
+.trow { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.tchip {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+}
+
+.vrow { display: flex; gap: 8px; overflow-x: auto; padding: 3px 2px 6px; -webkit-overflow-scrolling: touch; }
+.vc {
+  display: block;
+  flex: 0 0 auto;
+  width: 96px;
+  text-align: center;
+  background: var(--paper);
+  border: 0;
+  border-radius: 3px;
+  padding: 6px 4px 5px;
+  color: var(--ink);
+}
+.vc.is-selected { box-shadow: 0 0 0 2px var(--ink); }
+.vc svg { width: 100%; height: auto; }
+.vc b    { display: block; font-size: 11.5px; font-weight: 600; margin-top: 2px; }
+.vc span { display: block; font-size: 10.5px; color: var(--soft); }
+.vrow.only-p .vc { width: auto; min-width: 118px; }
+.vrow.only-p .vc svg { width: auto; height: 70px; margin: 0 auto; }
+
+.vauto {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  font-size: 10.5px;
+  line-height: 1.2;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px dashed var(--soft);
+  background: none;
+  color: var(--soft);
+}
+
+@media (min-width: 900px) {
+  .xhint { margin-top: 0; } /* level with the top of the controls */
+}
+
+/* phones: two chord cards side by side */
+@media (max-width: 560px) {
+  .xcell { flex: 1 1 calc(50% - 4px); }
+  .xcell .xc { min-width: 0; padding: 8px 6px 6px; }
+  .cf.only-g svg { width: 100%; max-width: 144px; }
+  .cf.only-p svg { height: 72px; max-width: 100%; }
+}
+
+/* ======================================================================
+ * Print: every key's panel, flat colours
+ * ==================================================================== */
+
+@media print {
+  .scroller { overflow: visible; max-height: none; }
+  .key-table { min-width: 0; }
+  .key-table .art svg { width: 72px; }
+  .key-table tr { break-inside: avoid; }
+  .key-table td.q-dim, .slot { background: none; }
+  .slot { border: 1px solid var(--rule); border-top-width: 4px; border-top-color: var(--q); }
+  .wheel, .hub, .key { transition: none; }
+  .panel[hidden] { display: block; margin-bottom: 10px; }
+}

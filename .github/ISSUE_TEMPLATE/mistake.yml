@@ -1,0 +1,34 @@
+name: A mistake in the music
+description: A wrong chord, note, count or explanation on one of the pages.
+labels: [content]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Much of this site was drafted with AI tools, and reports like this one are how it gets right.
+  - type: input
+    id: page
+    attributes:
+      label: Page
+      description: Its address, or its name and the section.
+      placeholder: Beats 101, Syncopation
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What's wrong
+      description: Quote the text, or say which example (which chord, which bar).
+    validations:
+      required: true
+  - type: textarea
+    id: right
+    attributes:
+      label: What it should be
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: How you know
+      description: "A book, a teacher, a recording, playing it yourself: anything that helps check it."

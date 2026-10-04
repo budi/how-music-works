@@ -1,0 +1,31 @@
+{
+  "name": "music-theory",
+  "version": "1.0.0",
+  "description": "Music theory pages for guitar and piano: static HTML, CSS and browser JavaScript modules.",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.13.0 || >=24"
+  },
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env scripts/dev.js",
+    "build": "node --env-file-if-exists=.env scripts/build.js",
+    "test": "node --experimental-vm-modules --disable-warning=ExperimentalWarning --test 'test/**/*.test.js'",
+    "test:watch": "node --experimental-vm-modules --disable-warning=ExperimentalWarning --test --watch 'test/**/*.test.js'",
+    "coverage": "node --experimental-vm-modules --disable-warning=ExperimentalWarning --test --experimental-test-coverage --test-coverage-include='js/**' --test-coverage-include='scripts/build.js' --test-coverage-include='scripts/render.js' --test-coverage-include='scripts/config.js' 'test/**/*.test.js'",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check": "npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@resvg/resvg-js": "^2.6.2",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.12.0",
+    "globals": "^17.13.0",
+    "handlebars": "^4.7.9",
+    "html-minifier-terser": "^7.2.0",
+    "jsdom": "^29.1.1"
+  }
+}

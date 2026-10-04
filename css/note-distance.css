@@ -1,0 +1,216 @@
+/*
+ * note-distance.css — note-distance page: the do picker, keyboard, staircase,
+ * distance table, sung exercises with their ladders (js/note-distance.js,
+ * templates/partials/interval-exercise.hbs) and the ear check. Play
+ * controls come from player.css.
+ */
+
+/* ---------- your do ---------- */
+
+/* sticks under the top bar (41px tall on this page) once you scroll past it */
+.your-do {
+  position: sticky;
+  top: 41px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 24px;
+  padding: 6px 0;
+  font-size: 13px;
+  background: var(--paper);
+  border-bottom: 1px solid transparent;
+  /* always one line: it scrolls sideways where it doesn't fit, rather than growing tall */
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.your-do > * { flex: 0 0 auto; }
+.your-do.is-stuck { border-bottom-color: var(--rule); }
+.yd-label { color: var(--soft); margin-right: 4px; }
+.your-do button {
+  padding: 5px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.your-do .yd-choice[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.your-do .yd-hear { margin-left: 8px; border-radius: 20px; font-weight: 500; }
+
+/* the high do: a 1 with a dot over it (js/note-distance.js) */
+.hi { position: relative; }
+.hi::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 1.36em; /* from the bottom of the text: just above the digit, in any box */
+  width: .18em;
+  height: .18em;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateX(-50%);
+}
+
+/* ---------- keyboard and staircase ---------- */
+
+.keyboard-wrap, .staircase-wrap { margin: 8px 0 18px; }
+.keyboard-wrap svg { width: 100%; max-width: 340px; height: auto; display: block; }
+.staircase-wrap svg { width: 100%; max-width: 560px; height: auto; display: block; }
+
+.keyboard .kw { fill: var(--card); stroke: var(--rule); }
+.keyboard .kb { fill: var(--key); }
+.keyboard .kname { font-size: 11px; font-weight: 650; fill: var(--ink); text-anchor: middle; font-family: inherit; }
+.keyboard .kbname { font-size: 8px; font-weight: 600; fill: var(--paper); text-anchor: middle; font-family: inherit; }
+.keyboard .kdot { fill: var(--min); }
+.keyboard .kdot.on-black { fill: var(--now); }
+.keyboard .ksyl { font-size: 11px; font-weight: 600; fill: var(--ink); text-anchor: middle; font-family: inherit; }
+.keyboard .kstep { fill: none; stroke: var(--min); stroke-width: 1.5; }
+.keyboard .kstep.is-half { stroke: var(--now); }
+.keyboard .kstepl { font-size: 9px; font-weight: 600; fill: var(--min); text-anchor: middle; font-family: inherit; }
+.keyboard .kstepl.is-half { fill: var(--now); }
+
+.staircase .stair { fill: var(--min); opacity: .22; }
+.staircase .stair.is-do { fill: var(--maj); opacity: .3; }
+.staircase .ssyl { font-size: 13px; font-weight: 650; fill: var(--ink); text-anchor: middle; font-family: inherit; }
+.staircase .snum { font-size: 12px; fill: var(--soft); text-anchor: middle; font-family: inherit; }
+.staircase .snum-dot { fill: var(--soft); }
+.staircase .sstep { font-size: 12px; font-weight: 700; fill: var(--min); text-anchor: middle; font-family: inherit; }
+.staircase .sstep.is-half { fill: var(--now); }
+
+/* ---------- distance table ---------- */
+
+.from-do { border-collapse: collapse; font-size: 14px; width: 100%; margin: 6px 0 14px; }
+.from-do th, .from-do td { text-align: left; padding: 6px 14px 6px 0; border-bottom: 1px solid var(--rule); overflow-wrap: normal; }
+.from-do th { font-size: 12px; color: var(--soft); font-weight: 600; }
+.from-do td b { display: inline-block; min-width: 1.4em; }
+.from-do .song { color: var(--soft); font-size: 13px; }
+/* short columns on one line where there's room; steps and songs wrap */
+@media (min-width: 561px) {
+  .from-do th, .from-do td:nth-child(1), .from-do td:nth-child(2), .from-do td:nth-child(4) { white-space: nowrap; }
+}
+.scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; } /* a table never widens the page */
+.from-do th:last-child, .from-do td:last-child { text-align: center; padding-right: 0; }
+.hear-it {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  vertical-align: middle;
+}
+.hear-it svg { width: 10px; height: 10px; fill: currentColor; margin-left: 1px; }
+.hear-it.is-sounding { background: var(--now); }
+@media (max-width: 560px) {
+  .from-do th:nth-child(3), .from-do td:nth-child(3) { display: none; } /* steps: the semitones say it */
+}
+
+/* ---------- a sung exercise ---------- */
+
+.interval-ex {
+  margin: 0 0 14px;
+  background: var(--card);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+.interval-ex figcaption b { display: block; font-size: 15px; font-weight: 650; }
+.interval-ex figcaption span { display: block; font-size: 13px; color: var(--soft); }
+
+.iv-body { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: start; margin: 10px 0 8px; }
+.iv-ladder svg, .ec-ladder svg { width: 132px; height: auto; display: block; }
+.iv-main { min-width: 0; }
+
+.iv-seq { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+.iv-seq .group { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.iv-seq .chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 34px;
+  padding: 7px 4px 3px; /* room for the dot over a high do */
+  border-radius: 4px;
+  background: var(--paper);
+  font-size: 11px;
+  color: var(--soft);
+  line-height: 1.2;
+}
+.iv-seq .chip b { font-size: 17px; color: var(--ink); font-weight: 650; }
+.iv-seq .chip.is-now { background: var(--now); color: var(--paper); }
+.iv-seq .chip.is-now b { color: var(--paper); }
+.iv-now { min-height: 1.5em; margin: 10px 0 0; font-size: 14px; color: var(--ink); }
+
+/* the ladder: a rung per semitone */
+.ladder .lrail { stroke: var(--rule); stroke-width: 2; }
+.ladder .ltick { stroke: var(--rule); stroke-width: 1.5; }
+.ladder .lnote circle { fill: var(--paper); stroke: var(--min); stroke-width: 1.5; }
+.ladder .lnum { font-size: 9px; font-weight: 700; fill: var(--ink); text-anchor: middle; font-family: inherit; }
+.ladder .lnum-dot { fill: var(--ink); }
+.ladder .lsyl { font-size: 11px; fill: var(--soft); text-anchor: end; font-family: inherit; }
+.ladder .lnote.is-from circle { fill: var(--min); }
+.ladder .lnote.is-from .lnum, .ladder .lnote.is-from .lnum-dot { fill: var(--paper); }
+.ladder .lnote.is-now circle { fill: var(--now); stroke: var(--now); }
+.ladder .lnote.is-now .lnum, .ladder .lnote.is-now .lnum-dot { fill: var(--paper); }
+.ladder .lnote.is-now .lsyl { fill: var(--ink); font-weight: 700; }
+.ladder .ljump { fill: none; stroke: var(--now); stroke-width: 2; }
+.ladder .ljumpl { font-size: 13px; font-weight: 700; fill: var(--now); font-family: inherit; }
+
+@media (max-width: 560px) {
+  .iv-body { grid-template-columns: 104px 1fr; gap: 10px; }
+  .iv-ladder svg, .ec-ladder svg { width: 104px; }
+}
+
+/* ---------- ear check ---------- */
+
+.ear-check { background: var(--card); border-radius: 4px; padding: 14px; margin: 0 0 18px; }
+.ec-body { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: start; }
+.ec-main { min-width: 0; }
+.ec-again {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+.ec-again:disabled { opacity: .4; cursor: default; }
+.ec-ask { font-size: 14px; color: var(--soft); margin: 12px 0 8px; }
+.ec-answers { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; max-width: 420px; }
+.ec-answer {
+  padding: 6px 6px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  line-height: 1.2;
+}
+.ec-answer b { display: block; font-size: 18px; }
+.ec-answer > span { display: block; font-size: 11px; color: var(--soft); } /* the syllable, not the dotted 1 */
+.ec-answer:disabled { cursor: default; opacity: .45; }
+.ec-answer.is-wrong { opacity: .35; text-decoration: line-through; }
+.ec-answer.is-right:disabled { opacity: 1; }
+.ec-answer.is-right { background: var(--maj); border-color: var(--maj); color: var(--paper); opacity: 1; }
+.ec-answer.is-right > span { color: var(--paper); }
+.ec-result { min-height: 1.5em; font-size: 14px; margin: 12px 0 2px; }
+.ec-score { font-size: 12.5px; color: var(--soft); margin: 0; }
+
+@media (max-width: 560px) {
+  .ec-body { grid-template-columns: 1fr; }
+  .ec-ladder { order: 2; }
+  .ec-ladder svg { margin: 0 auto; }
+}
+
+@media print {
+  .interval-ex, .ear-check { background: none; }
+  .your-do, .ear-check { display: none; }
+}

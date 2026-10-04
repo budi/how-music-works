@@ -1,0 +1,80 @@
+/*
+ * reading-notes.css — reading-notes page: staves drawn by js/staff.js
+ * (templates/partials/staff.hbs) and the note quiz (js/reading-notes.js).
+ * Play controls come from player.css.
+ */
+
+/* ---------- a staff ---------- */
+
+svg.staff { display: block; height: auto; max-width: 100%; overflow: visible; }
+/* ~11px per staff space on screen, whatever the staff's length */
+.staff-art svg { width: calc(var(--w, 30) * 11px); }
+.staff .glyph, .staff .barline, .staff .ledger { fill: var(--ink); }
+.staff .staff-line { fill: var(--soft); }
+.staff .sn-label { font-size: 1.3px; font-family: inherit; text-anchor: middle; fill: var(--soft); }
+.staff .sn { cursor: pointer; }
+.staff .sn-hit { fill: transparent; }
+.staff .sn:hover .head { fill: var(--min); }
+.staff .sn.is-now .head, .staff .sn.is-now .acc, .staff .sn.is-now .ledger { fill: var(--now); }
+.staff .sn.is-now .sn-label { fill: var(--now); font-weight: 650; }
+.staff .sn.is-right .head { fill: var(--maj); }
+
+.staff-fig {
+  margin: 0 0 14px;
+  background: var(--card);
+  border-radius: 4px;
+  padding: 12px 14px;
+}
+.staff-fig figcaption b { display: block; font-size: 15px; font-weight: 650; }
+.staff-fig figcaption span { display: block; font-size: 13px; color: var(--soft); }
+.staff-fig .staff-art { margin: 6px 0 4px; }
+.staff-controls { font-size: 13px; }
+.staff-controls .rhythm-play { min-width: 64px; padding: 4px 12px; font-size: 13px; }
+
+/* ---------- a keyboard ---------- */
+
+.keys-fig { margin: 0 0 14px; background: var(--card); border-radius: 4px; padding: 12px 14px; }
+.keys-fig figcaption b { display: block; font-size: 15px; font-weight: 650; }
+.keys-fig figcaption span { display: block; font-size: 13px; color: var(--soft); }
+.keys-art { margin: 10px 0 0; }
+.keys-art svg { display: block; width: calc(var(--whites, 15) * 26px + 34px); max-width: 100%; height: auto; } /* real size; smaller only to fit */
+.keyboard .key { cursor: pointer; }
+.keyboard .kw { fill: var(--paper); stroke: var(--rule); }
+.keyboard .kw.is-marked { fill: #fff; }
+.keyboard .kb { fill: var(--key); }
+.keyboard .kdot { fill: var(--min); }
+.keyboard .kdot.is-highlight { fill: var(--now); }
+.keyboard .key.is-now .kw, .keyboard .key.is-now .kb { fill: var(--now); }
+.keyboard .key:hover .kw { fill: #fff; }
+.keyboard .klabel { font-size: 11px; font-weight: 650; fill: var(--ink); text-anchor: middle; font-family: inherit; }
+.keyboard .klabel.is-highlight { fill: var(--now); }
+
+/* ---------- the quiz ---------- */
+
+.note-quiz { background: var(--card); border-radius: 4px; padding: 14px; margin: 0 0 18px; }
+.nq-staff { display: flex; justify-content: center; margin: 14px 0 10px; min-height: 120px; }
+.nq-staff svg { width: calc(var(--w, 12) * 13px); }
+/* the keyboard to answer on: as wide as there's room for, but keys never
+   narrower than 20px — on a phone it scrolls sideways instead (js/reading-notes.js
+   starts it with middle C in view) */
+.nq-keys { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+.nq-keys svg {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  width: clamp(calc(var(--whites, 20) * 20px), 100%, calc(var(--whites, 20) * 30px));
+}
+.nq-keys .kname { display: none; font-size: 9px; font-weight: 600; fill: var(--soft); text-anchor: middle; font-family: inherit; pointer-events: none; }
+.nq-keys .kname.on-black { font-size: 6.5px; fill: var(--paper); }
+.nq-keys.show-names .kname { display: inline; }
+.nq-keys .key.is-right .kw { fill: #a8cbb6; } /* light, so it can't be mistaken for a black key */
+.nq-keys .key.is-right .kb { fill: var(--maj); }
+.nq-keys .key.is-wrong .kw { fill: #e8c4b8; }
+.nq-keys .key.is-wrong .kb { fill: var(--dim); }
+.nq-result { min-height: 1.5em; font-size: 14px; margin: 12px 0 2px; text-align: center; }
+.nq-score { font-size: 12.5px; color: var(--soft); margin: 0; text-align: center; }
+
+@media print {
+  .staff-fig, .note-quiz { background: none; }
+  .staff-controls, .note-quiz { display: none; }
+}

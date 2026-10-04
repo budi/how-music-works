@@ -1,0 +1,81 @@
+name: Deploy
+
+# Tests main, builds it and puts it live on a server of your own, for a
+# deployment that uses Gitea (or Forgejo) Actions. GitHub ignores this folder;
+# its CI is in .github/workflows. Nothing here runs until a deployment sets
+# it up (docs/deploying.md):
+#
+#   - a runner on the web server labelled `deploy`, in host mode (the steps run
+#     on that machine), with Node 22.13+ and passwordless sudo for `install`
+#   - repository variables (Settings → Actions → Variables):
+#       DEPLOY_DIR  where releases go; the web server serves DEPLOY_DIR/current
+#       SITE_URL    the live site, checked after each deploy: https://music.example.org
+#       KEEP        how many releases to keep for rolling back (default 5)
+#     and the site's settings, named as in .env.example.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # "Run workflow": redeploy; on an older commit, a rollback
+
+jobs:
+  deploy:
+    if: vars.DEPLOY_DIR != ''
+    runs-on: deploy
+    timeout-minutes: 15
+    env:
+      SITE: ${{ vars.DEPLOY_DIR }}
+      KEEP: ${{ vars.KEEP || 5 }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Test
+        run: |
+          node --version
+          npm ci --no-audit --no-fund
+          npm run check
+
+      - name: Build
+        env:
+          UMAMI_SCRIPT_URL: ${{ vars.UMAMI_SCRIPT_URL }}
+          UMAMI_RECORDER_URL: ${{ vars.UMAMI_RECORDER_URL }}
+          UMAMI_WEBSITE_ID: ${{ vars.UMAMI_WEBSITE_ID }}
+          UMAMI_DOMAINS: ${{ vars.UMAMI_DOMAINS }}
+          SOURCE_URL: ${{ vars.SOURCE_URL }}
+        run: npm run build
+
+      # Each release gets its own folder; `current` is a symlink that is
+      # swapped in one step, so visitors never see a half-copied site.
+      - name: Deploy
+        env:
+          RELEASE: ${{ github.sha }}
+        run: |
+          sudo install -d -o "$(id -un)" -g "$(id -gn)" -m 755 "$SITE" "$SITE/releases"
+          dir="$SITE/releases/$RELEASE"
+          if [ ! -d "$dir" ]; then
+            cp -R dist "$dir.tmp"
+            chmod -R a+rX "$dir.tmp"
+            mv "$dir.tmp" "$dir"
+          fi
+          touch "$dir" # newest first when pruning, even when redeploying an old commit
+          ln -sfn "releases/$RELEASE" "$SITE/current.tmp"
+          mv -T "$SITE/current.tmp" "$SITE/current"
+          echo "current -> $(readlink "$SITE/current")"
+
+          # prune old releases, never the live one
+          ls -1dt "$SITE"/releases/*/ | tail -n +"$((KEEP + 1))" | while read -r old; do
+            [ "${old%/}" = "$dir" ] || rm -rf "$old"
+          done
+
+      - name: Check the live site
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          if [ -z "$SITE_URL" ]; then echo "SITE_URL isn't set: nothing to check"; exit 0; fi
+          SITE_URL=${SITE_URL%/}
+          host=${SITE_URL#https://}; host=${host%%/*}
+          # ask the server on this machine directly, by name, so DNS and any proxy in front aren't involved;
+          # the home page is recognised by its link to a topic (not its wording, which changes)
+          curl -fsS --retry 3 --resolve "$host:443:127.0.0.1" "$SITE_URL/" | grep -q 'number-system.html'
+          for page in number-system.html beats-101.html; do
+            curl -fsS --resolve "$host:443:127.0.0.1" -o /dev/null -w "%{http_code} $page\n" "$SITE_URL/$page"
+          done

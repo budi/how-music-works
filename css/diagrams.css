@@ -1,0 +1,57 @@
+/*
+ * diagrams.css — chord diagrams drawn by js/diagrams.js, plus the
+ * `.shapes` gallery used to show a row of them with captions.
+ *
+ * Diagram colours follow the chord quality: the SVG carries a q-maj / q-min /
+ * q-dim class, which sets --q (see base.css).
+ */
+
+svg.diagram { display: block; }
+
+/* ---------- guitar ---------- */
+
+.diagram .grid      { stroke: #9fb0a8; stroke-width: 1; fill: none; }
+.diagram .nut       { fill: var(--ink); }
+.diagram .fretno    { font-size: 12px; fill: var(--soft); text-anchor: end; font-family: inherit; }
+.diagram .mark      { font-size: 12px; fill: var(--soft); text-anchor: middle; font-family: inherit; }
+.diagram .open      { fill: none; stroke: var(--soft); stroke-width: 1.5; }
+.diagram .open-root { fill: var(--card); stroke: var(--ink); stroke-width: 1.5; }
+.diagram .dot       { fill: var(--q); }
+.diagram .root-ring { fill: none; stroke: var(--paper); stroke-width: 1.6; }
+.diagram .rootlab   { font-size: 9px; font-weight: 700; fill: var(--paper); text-anchor: middle; font-family: inherit; }
+.diagram .rootlab.on-open { fill: var(--ink); }
+
+/* ---------- piano ---------- */
+
+.diagram .white    { fill: var(--card); stroke: var(--rule); stroke-width: 1; }
+.diagram .black    { fill: var(--key); }
+.diagram .on       { fill: var(--q); }
+.diagram .black.on { stroke: var(--paper); stroke-width: 1.6; }
+.diagram .faded    { opacity: .55; }
+.diagram .pk  { font-size: 8.5px; font-weight: 600; fill: var(--paper); text-anchor: middle; font-family: inherit; }
+.diagram .pkb { font-size: 6px; letter-spacing: -.02em; }
+.diagram .pkr { font-size: 8px; font-weight: 700; fill: var(--paper); text-anchor: middle; font-family: inherit; opacity: .85; }
+
+/* ---------- gallery of shapes ---------- */
+
+.shapes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 14px;
+}
+.shape {
+  margin: 0;
+  background: var(--card);
+  border-radius: 4px;
+  padding: 10px 6px 12px;
+  text-align: center;
+}
+.shapeart { display: block; }
+.shapeart svg { width: 100%; max-width: 116px; height: auto; margin: 0 auto; }
+.only-p .shapeart svg { max-width: 126px; }
+.shape figcaption b { display: block; font-size: 14px; font-weight: 600; }
+.shape figcaption span { display: block; font-size: 11px; color: var(--soft); line-height: 1.35; margin-top: 2px; }
+
+@media print {
+  .shape { background: none; }
+}

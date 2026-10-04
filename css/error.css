@@ -1,0 +1,12 @@
+/* error.css — 404.html */
+
+.status {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.topics a b::before { content: "← "; }

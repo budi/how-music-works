@@ -1,0 +1,88 @@
+/*
+ * beats.css — beats-101 page: notation (js/notation.js) and the exercise
+ * players (js/beats.js, templates/partials/rhythm-exercise.hbs). The player
+ * controls themselves are in player.css.
+ */
+
+/* ---------- notation ---------- */
+
+svg.score { display: block; height: auto; max-width: 100%; overflow: visible; }
+.score .glyph, .score .stem, .score .beam, .score .barline, .score .tie { fill: var(--ink); }
+.score .staff-line { fill: var(--soft); }
+.score .bracket { fill: none; stroke: var(--ink); }
+.score .count { font-size: 1.25px; font-family: inherit; text-anchor: middle; fill: var(--soft); }
+.score .count.is-beat { fill: var(--ink); font-weight: 650; }
+.score .count.is-rest { opacity: .5; }
+
+/* the note and count sounding now */
+.score .ev.is-now .glyph, .score .ev.is-now .stem { fill: var(--now); }
+.score .count.is-now { fill: var(--now); opacity: 1; }
+
+/* ---------- an exercise ---------- */
+
+.rhythm {
+  margin: 0 0 14px;
+  background: var(--card);
+  border-radius: 4px;
+  padding: 12px 14px 12px;
+}
+.rhythm figcaption b { display: block; font-size: 15px; font-weight: 650; }
+.rhythm figcaption span { display: block; font-size: 13px; color: var(--soft); }
+
+.rhythm-score { margin: 8px 0 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+/* ~12px per staff space on screen, whatever the pattern's length */
+.rhythm-score svg { width: calc(var(--w, 40) * 12px); }
+.rhythm-error { color: var(--dim); font-family: var(--mono); font-size: 13px; }
+
+
+/* made up: two lines of four bars, each drawn as two rows of two bars, all
+   at one scale (js/beats.js sets the widths) */
+.rhythm.random .rhythm-score { max-width: calc(var(--w, 40) * 12px); overflow: visible; }
+.rhythm-line { display: flex; flex-direction: column; gap: 6px; }
+.rhythm.hide-counts .count { display: none; }
+.rhythm-line + .rhythm-line { margin-top: 18px; } /* bars 1-4 and 5-8 change apart */
+.rhythm-random { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.rhythm-new {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* compact: a row of short examples, e.g. the note-values tree */
+.rhythm.compact { display: grid; grid-template-columns: 9.5em 1fr auto; align-items: center; gap: 0 12px; padding: 6px 12px; margin-bottom: 6px; }
+.rhythm.compact .rhythm-score { margin: 0; min-width: 0; } /* shrink a long bar instead of covering Play */
+.rhythm.compact figcaption b { font-size: 14px; }
+.rhythm.compact figcaption span { font-size: 12px; }
+@media (max-width: 560px) {
+  .rhythm.compact { grid-template-columns: 1fr auto; }
+  .rhythm.compact .rhythm-score { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* ---------- note value table, drum key ---------- */
+
+.values { border-collapse: collapse; margin: 6px 0 18px; font-size: 14px; width: 100%; }
+.values th, .values td { text-align: left; padding: 5px 14px 5px 0; border-bottom: 1px solid var(--rule); }
+.values th { font-size: 12px; color: var(--soft); font-weight: 600; }
+.values th, .values td { overflow-wrap: normal; } /* never split "semibreve" */
+@media (max-width: 560px) {
+  .values th:nth-child(4), .values td:nth-child(4) { display: none; } /* the rows below show it */
+}
+
+.hear { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 14px; font-size: 13px; color: var(--soft); align-items: center; }
+.hear button {
+  padding: 4px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media print {
+  .rhythm-controls, .hear { display: none; }
+  .rhythm { background: none; padding-left: 0; }
+}

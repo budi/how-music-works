@@ -1,0 +1,16 @@
+# Keeps the build tools and the CI actions up to date, once a week. The pages
+# themselves have no dependencies: everything they run is in js/.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      dev-tools:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

@@ -1,0 +1,10 @@
+dist/
+dist.partial/
+node_modules/
+coverage/
+.DS_Store
+
+# local settings, e.g. visitor statistics for your deployment: never commit
+.env
+.env.*
+!.env.example

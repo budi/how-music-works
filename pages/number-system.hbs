@@ -1,0 +1,160 @@
+{{#> layout
+    title="The number system — all 12 keys on guitar and piano"
+    styles=(list "diagrams" "player" "number-system")
+    script="number-system"
+    instrument=true}}
+
+{{#*inline "footer-note"}}
+  <span class="only-g">Fingerings are one common voicing per chord, not the only one.</span>
+  <span class="only-p">Chords are shown in root position; any inversion is the same chord.</span>
+{{/inline}}
+
+<noscript><p class="noscript">The chord charts on this page are drawn with JavaScript — please turn it on.</p></noscript>
+
+<h1>The number system, in every key</h1>
+<p class="lede">The number system names chords by their place in a key instead of by letter: a 1, a 4 and a 5 rather than C, F and G.
+Every major key has the same seven chords in the same order, so once you know the row below you can play a song in any key.
+This page builds it up step by step — where the row comes from, every key, the shapes that play it, and the circle of fifths that joins the keys — and ends with exercises to make it stick.
+The diagrams switch between guitar and piano with the toggle at the top.</p>
+
+<div class="spine" id="spine"></div>
+<p class="spinenote">Read it as one word: major · minor · minor · major · major · minor · diminished.
+Nashville charts write the numbers on the left; classical theory writes the Roman numerals underneath — same thing.</p>
+
+
+<!-- ================================================================== -->
+<h2>Where the row comes from</h2>
+<p>Start from a major scale — in C, the white keys C D E F G A B — and number its notes 1 to 7.
+To build a chord on any of them, take that note, skip one, take the next, skip one, take the next: C&ndash;E&ndash;G on the 1, D&ndash;F&ndash;A on the 2, E&ndash;G&ndash;B on the 3, and so on.
+The major scale always has its half steps in the same places, so the stacks always come out the same way:
+major on 1, 4 and 5, minor on 2, 3 and 6, and a squeezed, diminished chord on 7.
+Change key and every letter changes, but the numbers and their qualities stay put. That's why players talk in numbers:
+“1&ndash;5&ndash;6m&ndash;4” means the same thing in every key, while “C&ndash;G&ndash;Am&ndash;F” only works in C. The first row of the table below is this exact list, in C.</p>
+
+
+<!-- ================================================================== -->
+<h2>Every key, chord by chord</h2>
+<p>Find your key on the left, read across; the table scrolls in both directions and the headings stay put.
+<span class="only-g">A diagram with a thick bar at the top is played at the nut;
+otherwise the number beside it (<code>3fr</code>) is the fret where the shape starts. The digits underneath are
+the same voicing written out string 6 → string 1, <code>x</code> meaning don't play that string.</span>
+<span class="only-p">Each chord is shown in root position: the coloured keys are the notes to press, named on the key, with the root marked <b>R</b>.
+Every keyboard starts on the chord's lowest note rather than at C, so the shape is easy to see. The letters underneath
+are the same notes written out, bottom to top.</span></p>
+<div class="scroller wide">
+  <table class="key-table" id="key-table"></table>
+</div>
+
+
+<!-- ================================================================== -->
+<div class="only-g">
+<h2>Seven shapes cover the whole chart</h2>
+<p>Every barre chord above is one of these, slid up the neck. Match the circled <b>R</b> to the root note on
+string 6, 5, or 4 and the chord names take care of themselves. Every diagram on this page marks each string that sounds the root with an <b>R</b>, open strings included. The ° chords are played as diminished sevenths
+(four notes instead of three) — that's the voicing guitarists actually reach for, and it works anywhere a 7° is called.</p>
+<div class="shapes">
+  {{> chord-shape guitar="1 3 3 2 1 1 (barre 6-1)" root="F" quality="maj" movable=true name="Major" note="root on string 6 — F at fret 1, G at 3"}}
+  {{> chord-shape guitar="1 3 3 1 1 1 (barre 6-1)" root="F" quality="min" movable=true name="Minor" note="root on string 6 — Fm at fret 1, Gm at 3"}}
+  {{> chord-shape guitar="x 1 3 3 3 1 (barre 5-1)" root="Bb" quality="maj" movable=true name="Major" note="root on string 5 — Bb at fret 1, C at 3"}}
+  {{> chord-shape guitar="x 1 3 3 2 1 (barre 5-1)" root="Bb" quality="min" movable=true name="Minor" note="root on string 5 — Bbm at fret 1, Cm at 3"}}
+  {{> chord-shape guitar="3 x 2 3 2 x (barre 4-2)" root="G" quality="dim" movable=true name="Diminished 7th" note="root on string 6 — G° at fret 3, A° at 5"}}
+  {{> chord-shape guitar="x 3 4 2 4 x" root="C" quality="dim" movable=true name="Diminished 7th" note="root on string 5 — C° at fret 3, B° at 2"}}
+  {{> chord-shape guitar="x x 2 3 2 3 (barre 4-2)" root="E" quality="dim" movable=true name="Diminished 7th" note="root on string 4 — E° at fret 2, C° at 10"}}
+</div>
+
+<h2>Open chords worth knowing first</h2>
+<p>In the guitar-friendly keys — G, C, D, A, E — most of the numbers land on these.</p>
+<div class="shapes">
+  {{> chord-shape guitar="x 3 2 0 1 0" root="C" quality="maj" name="C"}}
+  {{> chord-shape guitar="x 0 2 2 2 0" root="A" quality="maj" name="A"}}
+  {{> chord-shape guitar="3 2 0 0 0 3" root="G" quality="maj" name="G"}}
+  {{> chord-shape guitar="0 2 2 1 0 0" root="E" quality="maj" name="E"}}
+  {{> chord-shape guitar="x x 0 2 3 2" root="D" quality="maj" name="D"}}
+  {{> chord-shape guitar="x 0 2 2 1 0" root="A" quality="min" name="Am"}}
+  {{> chord-shape guitar="0 2 2 0 0 0" root="E" quality="min" name="Em"}}
+  {{> chord-shape guitar="x x 0 2 3 1" root="D" quality="min" name="Dm"}}
+</div>
+</div>
+
+<div class="only-p">
+<h2>Three hand shapes cover the whole chart</h2>
+<p>Every chord in the table is one of these three stacks of half steps, moved to a new root. Count up from the root and
+the black-and-white pattern takes care of itself. The faded fourth note on the diminished chord is the seventh most players add;
+leave it out and you have the plain 7° triad. Every diagram on this page marks the root with an <b>R</b>.</p>
+<div class="shapes">
+  {{> chord-shape piano="C E G" root="C" quality="maj" name="Major" note="4 half steps, then 3 — C E G"}}
+  {{> chord-shape piano="C Eb G" root="C" quality="min" name="Minor" note="3 half steps, then 4 — C Eb G"}}
+  {{> chord-shape piano="C Eb Gb A" faded="A" root="C" quality="dim" name="Diminished 7th" note="3, 3, then 3 more — C Eb Gb A"}}
+</div>
+
+<h2>Fingering and inversions</h2>
+<p>Right hand 1&ndash;3&ndash;5 on triads (thumb on the root), left hand 5&ndash;3&ndash;1. For the four-note diminished chord use 1&ndash;2&ndash;3&ndash;5 in the right hand.
+Once a shape feels solid, try starting it on the 3rd or the 5th instead of the root: same notes, same number, less jumping around between chords.
+Playing the 1&ndash;5&ndash;6m&ndash;4 progression in C with inversions, your hand barely moves from the middle of the keyboard.</p>
+</div>
+
+
+<!-- ================================================================== -->
+<h2>The circle of fifths</h2>
+<p>Every key on the wheel is a fifth up from the one before it. That one rule hides a lot of shortcuts. Tap any key, outer ring or inner ring, and it spins to the top.</p>
+
+<div class="cof wide" id="circle-of-fifths"></div>
+
+<h3>How people actually use it</h3>
+<ul class="howto">
+  <li><b>Finding the chords of a key.</b> Tap a key and look at the cluster it sits in: the three touching majors on the outer ring are your 1, 4 and 5, and the three minors tucked under them are your 2m, 3m and 6m. That's six of the seven with no counting. The 7° is the only one the wheel doesn't hand you.</li>
+  <li><b>Relative minor.</b> Straight inside every major key sits the minor that shares its chords. If a song feels sad but the chords look like C major, it's probably in Am.</li>
+  <li><b>Transposing a song.</b> Too high to sing in G? Pick a new key and move every chord in the song the same number of steps around the wheel. G → E is three clicks clockwise, so C becomes A, D becomes B, Em becomes C#m.
+    <span class="only-g">On guitar a capo does the same job: it moves your open shapes up the wheel without you learning anything new.</span>
+    <span class="only-p">On piano nothing changes but the starting key: the same 4-then-3 hand shape lands on a different set of black and white keys.</span></li>
+  <li><b>Reading key signatures.</b> Each step clockwise from C adds one sharp; each step anticlockwise adds one flat. Two sharps on the staff? Two steps clockwise: D major, or Bm.</li>
+  <li><b>Changing key without a bump.</b> Neighbouring keys share six chords, so hopping to the 4 or the 5 for a bridge sounds natural. Keys on the opposite side of the wheel share almost nothing, which is exactly what you want when you're after drama.</li>
+  <li><b>Guessing the next chord.</b> Chords love to move anticlockwise: E7 wants A, A7 wants D, D7 wants G. If you hear a seventh chord, its resolution is one click to the left.</li>
+</ul>
+
+
+<!-- ================================================================== -->
+<h2>Build a progression, explore the shapes</h2>
+<p>Pick a key and fill the progression with chord numbers; add or remove lines as you go. The chart shows one shape per chord, in order.
+<span class="only-g">Below the chart, every chord lists all of its shapes, lowest on the neck first. Pick the shape you want for the first chord; every chord after it follows the one before, choosing the shape nearest that spot on the neck, so the whole progression sits under one hand the way a chord book lays out "position 1" to "position 5". Tap a shape to take over for that chord (the chords after it will follow your pick), or tap "follow previous" to hand it back.</span>
+<span class="only-p">Below the chart, every chord lists its three inversions (root position, then the 3rd on the bottom, then the 5th). Pick one for the first chord; every chord after it follows, choosing the inversion that keeps your hand in the same part of the keyboard. Tap an inversion to take over for that chord, or "follow previous" to hand it back.</span>
+The chips above each row are flavours of the same chord: sus2 and sus4 swap the 3rd for a neighbour, add9, M7 and M9 stack colour on top of a major, m7, m9 and m11 do the same for a minor, and the diminished comes as a plain triad, a dim7, or m7♭5, its softer cousin. They keep the same number in the progression.</p>
+
+<div class="builder wide" id="builder"></div>
+
+<h3>Why bother with more than one shape</h3>
+<ul class="howto">
+  <li><span class="only-g"><b>Stay in one spot.</b> A 1&ndash;6m&ndash;4&ndash;5 in A can be played entirely between frets 4 and 7, or entirely open. Pick the shape of each chord that sits nearest the others and your left hand stops sprinting.</span><span class="only-p"><b>Stay in one spot.</b> C to Am to F to G in root position hops all over the keyboard. Use inversions so each chord shares a note or two with the last one and your hand barely moves.</span></li>
+  <li><b>Different colour, same chord.</b> <span class="only-g">The higher shapes are brighter and thinner; open and E-shape voicings are full and low. Same numbers, different mood.</span><span class="only-p">Root position is solid and grounded; an inversion with the 3rd on top sounds more open. Try the same progression with each.</span></li>
+  <li><b>Flavours are seasoning, not a new recipe.</b> A sus4 that resolves to the plain chord, an add9 on the 1, a m7 on the 6m, a M7 on the 4 — each is still the same number, just dressed up. The classic move is to keep the number and change the flavour on the repeat.</li>
+  <li><b>Two players, two registers.</b> If someone else is already playing the open shapes, take the same chords higher up and you'll stop fighting over the same notes.</li>
+  <li><b>A shape is a number in disguise.</b> <span class="only-g">Once you know where the root sits in each shape, sliding the whole shape to a new root is transposing. That's the number system on the fretboard.</span><span class="only-p">The 4-then-3 pattern is a major chord anywhere on the keyboard. Move the root, keep the pattern, and you've transposed.</span></li>
+</ul>
+
+
+<!-- ================================================================== -->
+<h2>Practise it</h2>
+<p>A few minutes a day for a week does more than an hour once. Work down the list; each step builds on the one before.</p>
+<ol class="notes">
+  <li>Pick one key — <span class="only-g">G on guitar</span><span class="only-p">C on piano</span> — and play 1&ndash;4&ndash;5&ndash;1, then 1&ndash;5&ndash;6m&ndash;4.
+  Say each number out loud as you change chord. That second progression is most of pop music.</li>
+  <li>Play the same two progressions in the keys either side of it on the circle of fifths.
+  The chords change; the sound of the progression doesn't.</li>
+  <li>Take a song you already play, write its chords as numbers, then play it in another key straight from the table.</li>
+  <li>In the builder, set up 1&ndash;6m&ndash;4&ndash;5 and
+  <span class="only-g">play it without leaving one spot on the neck, then again in a higher position.</span><span class="only-p">play it with inversions so your hand barely moves, then again in root position to hear the difference.</span></li>
+  <li>Test yourself without looking: what are the 4 and the 5 in D? The 6m in F? The 2m in A? The 1, 4 and 5 in Eb?
+    <details><summary>Answers</summary>G and A · Dm · Bm · Eb, Ab and Bb.</details></li>
+</ol>
+
+<h2>Worth remembering</h2>
+<ul class="notes">
+  <li>The 6m is the relative minor: same chords, different home base. In C, the 6m is Am.</li>
+  <li>The 7° is rare in songs. Players usually swap in the 5 chord or a 5 with a seventh instead — they share
+  two notes and pull to the 1 the same way.</li>
+  <li>A number with no letter after it is major, <code>m</code> is minor, <code>°</code> is diminished.
+  Nashville charts add extras the same way you'd expect: <code>4/6</code> means the 4 chord over the 6th note of the scale.</li>
+  <li>In the key of F#, the 7° is written E#° because every key uses each letter once. On the fretboard it's F°.</li>
+</ul>
+
+{{/layout}}

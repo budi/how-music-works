@@ -1,0 +1,21 @@
+{{!--
+  The server shows this page at whatever address was missing (/foo/bar too;
+  docs/deploying.md), so base="/" resolves every link from the site root,
+  not from that address.
+--}}
+{{#> layout title="Page not found — How music works" styles=(list "index" "error") base="/" noindex=true}}
+
+<p class="status">404 · Not found</p>
+<h1>This page isn’t here</h1>
+<p class="lede">The link may be old, or the page may have moved. Everything on the site starts from the list of topics.</p>
+
+<ol class="topics">
+  <li>
+    <a href="./">
+      <b>How music works</b>
+      <span>All topics</span>
+    </a>
+  </li>
+</ol>
+
+{{/layout}}

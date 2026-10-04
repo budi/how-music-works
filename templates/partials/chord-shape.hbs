@@ -1,0 +1,25 @@
+{{!--
+  One chord diagram with a caption, for the .shapes gallery.
+
+    {{> chord-shape guitar="1 3 3 2 1 1 (barre 6-1)" root="F" quality="maj" movable=true
+                    name="Major" note="root on string 6"}}
+    {{> chord-shape piano="C Eb Gb A" faded="A" root="C" quality="dim" name="Diminished 7th"}}
+
+  guitar / piano  the voicing (see js/music/guitar.js for the notation)
+  root, quality   for the R marks and the colour
+  movable         guitar only: always show the fret number
+  faded           piano only: notes drawn lighter
+  name, note      caption; `note` defaults to the guitar frets
+
+  The play button plays the voicing (js/ui/play-buttons.js).
+--}}
+<figure class="shape">
+  <button type="button" class="chord-play" aria-label="Play {{name}}"><svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2.5 1.5v7l6-3.5z"/></svg></button>
+  <span class="shapeart"
+    {{#if guitar}} data-guitar="{{guitar}}"{{/if}}
+    {{#if piano}} data-piano="{{piano}}"{{/if}}
+    {{#if faded}} data-faded="{{faded}}"{{/if}}
+    data-root="{{root}}" data-quality="{{quality}}"
+    {{#if movable}} data-movable{{/if}}></span>
+  <figcaption><b>{{name}}</b><span>{{#if note}}{{note}}{{else}}{{guitar}}{{/if}}</span></figcaption>
+</figure>

@@ -1,0 +1,32 @@
+{{!--
+  A playable rhythm, drawn as notation (js/pages/beats-101/exercise.js does the drawing and playing).
+
+    {{> rhythm-exercise name="Quarter notes" time="4/4" pattern="q q q q" tempo=80}}
+    {{> rhythm-exercise name="Rock beat" time="4/4" tempo=96
+        hands="e:hh e:hh e:hh+sn e:hh e:hh e:hh e:hh+sn e:hh" feet="q:bd qr q:bd qr"}}
+
+  name        title above it
+  note        a line of explanation under the title (optional)
+  time        time signature, e.g. "6/8"
+  pattern     one-line rhythm — see js/music/rhythm.js for how to write one
+  hands/feet  a drum beat instead: hi-hat (hh) and snare (sn) / bass drum (bd)
+  tempo       beats per minute to start at
+  sound       what a one-line rhythm sounds like: clap (default), click, sn, bd, hh
+  swing       play eighths long-short
+  compact     only a play button; no counting, tempo, metronome or count-in
+  random      no pattern: eight made-up bars that keep changing as they play
+--}}
+<figure class="rhythm{{#if compact}} compact{{/if}}{{#if random}} random wide{{/if}}"
+  data-time="{{time}}"
+  {{#if pattern}} data-pattern="{{pattern}}"{{/if}}
+  {{#if hands}} data-hands="{{hands}}"{{/if}}
+  {{#if feet}} data-feet="{{feet}}"{{/if}}
+  {{#if tempo}} data-tempo="{{tempo}}"{{/if}}
+  {{#if sound}} data-sound="{{sound}}"{{/if}}
+  {{#if swing}} data-swing{{/if}}
+  {{#if compact}} data-compact{{/if}}
+  {{#if random}} data-random{{/if}}>
+  <figcaption><b>{{name}}</b>{{#if note}}<span>{{note}}</span>{{/if}}</figcaption>
+  <div class="rhythm-score"></div>
+  <div class="rhythm-controls"></div>
+</figure>

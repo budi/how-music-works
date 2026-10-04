@@ -1,0 +1,68 @@
+{{!--
+  The HTML skeleton every page shares. A page wraps its content in it:
+
+    {{#> layout title="…" styles=(list "diagrams") script="number-system" instrument=true}}
+      …page content…
+    {{/layout}}
+
+  Options (all optional except title):
+    title       <title> text
+    styles      stylesheets from css/, after base.css           e.g. (list "index")
+    script      the page's own script, js/pages/<script>/index.js, deferred   e.g. "beats-101"
+    instrument  the page has guitar/piano content: adds the switch and js/site/instrument.js
+    home        this is the home page: the site name in the top bar isn't a link
+    base        <base href>, for pages shown at any address (404)
+    noindex     keep search engines away
+
+  A page can also define inline partials that end up in here:
+    "footer-note"  text at the start of the footer
+
+  Settings (.env.example) are @root.site: statistics and the source link
+  appear only when they're set up.
+
+  Every script here is an ES module; the build bundles each one, with all it
+  imports, into a single file (scripts/build.js).
+--}}
+<!doctype html>
+<html lang="en" data-instrument="guitar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{{#if noindex}}
+<meta name="robots" content="noindex">
+{{/if}}
+<title>{{title}}</title>
+{{#if base}}
+<base href="{{base}}">
+{{/if}}
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/base.css">
+{{#each styles}}
+<link rel="stylesheet" href="css/{{this}}.css">
+{{/each}}
+{{#if instrument}}
+<!-- before paint, so the remembered guitar/piano choice doesn't flicker -->
+<script src="js/site/instrument.js"></script>
+{{/if}}
+{{#if script}}
+<script defer src="js/pages/{{script}}/index.js"></script>
+{{/if}}
+{{!-- visitor statistics, only when they're set up (js/site/stats.js) --}}
+{{#with @root.site.stats}}
+<script defer src="js/site/stats.js" data-tracker="{{tracker}}"{{#if recorder}} data-recorder="{{recorder}}"{{/if}} data-website-id="{{websiteId}}" data-domains="{{domains}}"></script>
+{{/with}}
+</head>
+<body>
+<div class="wrap">
+
+{{> topbar}}
+
+{{> @partial-block}}
+
+{{> footer}}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# LF line endings in the repository whatever the platform (as in .editorconfig)
+* text=auto eol=lf
+
+# Generated from the Bravura font: collapsed in diffs, left out of language stats
+js/draw/glyphs.js linguist-generated=true

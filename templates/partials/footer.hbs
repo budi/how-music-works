@@ -1,0 +1,13 @@
+{{!--
+  Site footer, one line each: the page's own note (a page sets it with
+  {{#*inline "footer-note"}}…{{/inline}}), the shared note, then the links.
+--}}
+<footer>
+  <p class="foot-note">{{#> footer-note}}{{/footer-note}}</p>
+  <p>Print or save any page — it works offline.</p>
+  <p class="foot-links">
+    {{#unless home}}<a href="index.html">All topics</a>{{/unless}}
+    <a href="disclaimer.html">Disclaimer</a>
+    {{#if @root.site.sourceUrl}}<a href="{{@root.site.sourceUrl}}">Source code</a>{{/if}}
+  </p>
+</footer>

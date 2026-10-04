@@ -1,0 +1,173 @@
+/*
+ * base.css — shared by every music-theory page.
+ * Colours, type, page layout, the top bar and guitar/piano switch, lists, footer, print.
+ */
+
+/* ---------- colours ---------- */
+
+:root {
+  --paper: #e9ede9;   /* page background */
+  --card:  #f4f6f3;   /* raised panels */
+  --ink:   #0f231d;   /* text */
+  --soft:  #5d6f68;   /* secondary text */
+  --rule:  #c5cfc8;   /* hairlines */
+
+  /* chord qualities */
+  --maj: #14342b;
+  --min: #3b6c8f;
+  --dim: #a8452b;
+  --key: #3a4a44;     /* black piano keys */
+  --now: #c0582f;     /* what's playing now; also links under the pointer */
+
+  --gutter: clamp(16px, 4vw, 48px);
+  --measure: 44rem;   /* reading width for text */
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ease: cubic-bezier(.4, 0, .2, 1);
+}
+
+/* Anything tagged with a quality gets --q: its colour. */
+.q-maj { --q: var(--maj); }
+.q-min { --q: var(--min); }
+.q-dim { --q: var(--dim); }
+
+/* ---------- page ---------- */
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Avenir Next", "Segoe UI", Roboto, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px var(--gutter) 72px;
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  font-size: clamp(28px, 6vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -.02em;
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+h2 { font-size: 20px; font-weight: 600; margin: 52px 0 6px; }
+h2 + p { margin: 0 0 20px; color: var(--soft); }
+h3 { font-size: 17px; font-weight: 600; margin: 28px 0 8px; }
+
+.lede { color: var(--soft); margin: 0 0 30px; }
+
+code {
+  font-family: var(--mono);
+  font-size: 13px;
+  background: var(--card);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+button { font: inherit; color: inherit; }
+
+.noscript { background: var(--card); padding: 12px 16px; border-radius: 4px; }
+
+/* ---------- page layout: one centred column ----------
+ * Text sits in a centred reading column (--measure). Parts that need room —
+ * tables, galleries, interactive tools — get class="wide" and use the full
+ * page width, centred on the same line. Instrument-only sections
+ * (<div class="only-g">) are see-through: their children follow the same rule.
+ */
+.wrap > :not(.topbar, .wide, .only-g, .only-p),
+.wrap > :is(.only-g, .only-p) > :not(.wide) {
+  max-width: var(--measure);
+  margin-left: auto;
+  margin-right: auto;
+}
+.wide { margin-left: auto; margin-right: auto; }
+
+/* ---------- top bar: home link + guitar / piano switch ---------- */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: -40px calc(-1 * var(--gutter)) 26px;
+  padding: 10px var(--gutter);
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+}
+.topbar span { font-size: 12px; color: var(--soft); margin-right: 4px; }
+.topbar .home {
+  margin-right: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--soft);
+  text-decoration: none;
+}
+.topbar a.home::before { content: "← "; } /* not on the home page itself */
+.topbar a.home:hover { color: var(--now); }
+.topbar button {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--rule);
+  background: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.topbar button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* Content for one instrument only */
+[data-instrument="guitar"] .only-p,
+[data-instrument="piano"] .only-g { display: none !important; }
+
+/* ---------- lists ---------- */
+
+.howto li { margin-bottom: 10px; }
+.howto b { font-weight: 650; }
+.notes li { margin-bottom: 9px; }
+
+/* ---------- links ---------- */
+
+a { color: var(--min); } /* the minor chords' blue */
+a:hover { color: var(--now); }
+
+/* ---------- footer ---------- */
+
+footer {
+  margin-top: 56px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--soft);
+}
+footer p { margin: 0 0 6px; }
+footer .foot-note:empty { display: none; } /* pages without a note of their own */
+footer a { color: inherit; }
+footer a:hover { color: var(--now); }
+.foot-links { display: flex; flex-wrap: wrap; gap: 4px 0; }
+.foot-links a + a::before { content: "·"; display: inline-block; padding: 0 10px; text-decoration: none; }
+
+/* ---------- motion & print ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
+
+@media print {
+  body { background: #fff; }
+  .topbar { display: none; }
+}
+
+/* "Last updated …" at the end of a page like the disclaimer */
+.updated { font-size: 13px; color: var(--soft); margin-top: 28px; }

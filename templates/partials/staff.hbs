@@ -1,0 +1,17 @@
+{{!--
+  A staff with notes on it, drawn by js/draw/staff.js; tap a note to hear it
+  (js/pages/reading-notes/figures.js does the drawing and playing).
+
+    {{> staff clef="treble" notes="E4 G4 B4 D5 F5" name="Lines of the treble staff"}}
+
+  clef     treble, bass, or grand (both, joined by a brace)
+  notes    C4, F#4, Bb3, Bn4 (natural); on a grand staff C4@t / C4@b picks the staff
+  labels   letters (default), names (with the octave: C4), or none
+  name     title above it (optional)
+  note     a line of explanation under the title (optional)
+--}}
+<figure class="staff-fig" data-clef="{{clef}}" data-notes="{{notes}}"{{#if labels}} data-labels="{{labels}}"{{/if}}>
+  {{#if name}}<figcaption><b>{{name}}</b>{{#if note}}<span>{{note}}</span>{{/if}}</figcaption>{{/if}}
+  <div class="staff-art"></div>
+  <div class="staff-controls"></div>
+</figure>

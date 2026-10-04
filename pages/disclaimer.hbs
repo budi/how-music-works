@@ -1,0 +1,60 @@
+{{!--
+  How the site is made (AI tools), what it promises, what it records, credits.
+
+  Every statement here should stay true: when the site changes (a new
+  statistics tool, a new font, more review), change this page with it and
+  update the date at the bottom. The statistics section follows the settings
+  (.env.example): it describes the tracking only when that is on.
+--}}
+{{#> layout title="Disclaimer — How music works"}}
+
+<h1>Disclaimer</h1>
+<p class="lede">How this site is made, what it can and can’t promise, and what it records about your visit.</p>
+
+<h2>Made with AI tools</h2>
+<p>This site was built with the help of AI tools. Most of the code — the pages, the chord and notation drawings, the sounds and
+the interactive parts — was written by AI from its contributors’ directions. Much of the text and many of the musical examples were drafted by AI too.</p>
+<p>The contributors chose the topics, decided what each page should do, and reviewed parts of the result. Not every chord,
+count and sentence has been checked by a person.</p>
+
+<h2>Accuracy</h2>
+<ul class="notes">
+  <li>AI tools can produce explanations that sound right but are wrong, so these pages may contain mistakes.
+  Use them as a practice aid, not an authority: where they disagree with a teacher or a trusted book, go with the teacher or the book.</li>
+  <li>Everything here is general information for learning and practice. It is offered as it is, without any promise that it is
+  complete, correct or suitable for a particular purpose.</li>
+  <li>To the extent the law allows, the people who make and run this site aren’t responsible for any loss or damage that comes from relying on it.</li>
+  <li>The sounds are generated in your browser, and how loud they are depends on your device. Turn the volume down before your first Play.</li>
+</ul>
+
+<h2>Visitor statistics</h2>
+{{#with @root.site.stats}}
+<p>To see how many people visit and how the pages are used, this site uses <a href="https://umami.is">Umami</a>, an open-source statistics tool, at
+<code>{{host}}</code>. When you open a page, it records:</p>
+<ul class="notes">
+  <li>the page, and the site that linked you here;</li>
+  <li>your browser, operating system, device type, screen size and language;</li>
+  <li>your approximate country, worked out from your IP address.</li>
+</ul>
+{{#if recorder}}
+<p>It may also record your visit as a replay: what the page showed, and where you scrolled, clicked and moved the pointer.
+Values entered into the page’s controls are masked before they are sent.</p>
+{{/if}}
+<p>It doesn’t set cookies.</p>
+{{else}}
+<p>This site doesn’t collect visitor statistics, and it doesn’t set cookies.</p>
+{{/with}}
+
+<h2>Credits</h2>
+<p>The music symbols are drawn from glyph outlines in the Bravura font, copyright Steinberg Media Technologies GmbH, with
+Reserved Font Name <a href="https://github.com/steinbergmedia/bravura">Bravura</a>, used under the <a href="licenses/bravura-OFL.txt">SIL Open Font License 1.1</a>.
+This site isn’t connected with or endorsed by Steinberg.</p>
+<p>No recordings are used: every sound is synthesised in your browser.</p>
+
+<h2>Open source</h2>
+<p>This site is open source, under the MIT License.{{#if @root.site.sourceUrl}} To report a mistake or suggest a change,
+go to <a href="{{@root.site.sourceUrl}}">its source code</a>.{{/if}}</p>
+
+<p class="updated">Last updated 6 October 2026.</p>
+
+{{/layout}}

@@ -1,0 +1,14 @@
+name: An idea
+description: A new topic, an example that would help, or a feature.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Who it helps, and how

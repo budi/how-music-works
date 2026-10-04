@@ -1,0 +1,190 @@
+{{#> layout
+    title="Beats 101 — reading rhythm and time signatures"
+    styles=(list "player" "beats")
+    script="beats-101"}}
+
+{{#*inline "footer-note"}}
+  Every sound is made in your browser — turn the volume down a little before your first Play.
+{{/inline}}
+
+<noscript><p class="noscript">The examples on this page are drawn and played with JavaScript — please turn it on.</p></noscript>
+
+<h1>Beats 101</h1>
+<p class="lede">Rhythm is written as notes whose shapes tell you how long to hold them, measured against a steady beat.
+This page starts from that beat, adds the note values one at a time, then puts them together into time signatures,
+triplets, syncopation and swing — and ends with the drum beats most songs are built on.
+Every example plays: press Play, count along out loud, then clap or tap it yourself.</p>
+
+<p class="lede">Each example loops until you stop it. It counts you in for one bar, the metronome clicks the beat,
+and the note sounding now lights up together with its count. Slow it down until you can clap it without thinking, then speed it up.</p>
+
+
+<!-- ================================================================== -->
+<h2>The beat</h2>
+<p>Under every song is a steady pulse — the beat you tap your foot to. Written music groups the beats into <b>bars</b>
+(the vertical lines mark where one ends) and counts them from 1 at the start of each bar. In most music a bar holds four beats: 1 2 3 4, 1 2 3 4.</p>
+
+{{> rhythm-exercise name="Four beats to a bar" note="One quarter note on every beat. Clap on each number." time="4/4" pattern="q q q q | q q q q" tempo=80}}
+
+
+<!-- ================================================================== -->
+<h2>Note values</h2>
+<p>A note’s shape says how long it lasts, measured in beats. Each value is half the one above it:
+one whole note lasts as long as two halves, four quarters, eight eighths or sixteen sixteenths.
+Play the rows one after another — the metronome keeps the same beat while the notes get faster.</p>
+
+<table class="values">
+  <thead><tr><th>Note</th><th>Also called</th><th>Beats in 4/4</th><th>How it looks</th></tr></thead>
+  <tbody>
+    <tr><td>Whole</td><td>semibreve</td><td>4</td><td>hollow head, no stem</td></tr>
+    <tr><td>Half</td><td>minim</td><td>2</td><td>hollow head with a stem</td></tr>
+    <tr><td>Quarter</td><td>crotchet</td><td>1</td><td>filled head with a stem</td></tr>
+    <tr><td>Eighth</td><td>quaver</td><td>½</td><td>one flag, or one beam</td></tr>
+    <tr><td>Sixteenth</td><td>semiquaver</td><td>¼</td><td>two flags, or two beams</td></tr>
+  </tbody>
+</table>
+
+{{> rhythm-exercise compact=true name="Whole note" note="4 beats" time="4/4" pattern="w" tempo=80}}
+{{> rhythm-exercise compact=true name="Half notes" note="2 beats each" time="4/4" pattern="h h" tempo=80}}
+{{> rhythm-exercise compact=true name="Quarter notes" note="1 beat each" time="4/4" pattern="q q q q" tempo=80}}
+{{> rhythm-exercise compact=true name="Eighth notes" note="2 to a beat" time="4/4" pattern="e e e e e e e e" tempo=80}}
+{{> rhythm-exercise compact=true name="Sixteenth notes" note="4 to a beat" time="4/4" pattern="s s s s s s s s s s s s s s s s" tempo=80}}
+
+<p>Eighths and sixteenths next to each other are joined by <b>beams</b> instead of flags — one beam for eighths, two for sixteenths —
+grouped one beat at a time, so you can see where each beat starts. Between the beats, count “&amp;” halfway and “e” and “a” for the quarters in between:
+<b>1</b> e &amp; a <b>2</b> e &amp; a.</p>
+
+{{> rhythm-exercise name="Mixing values" note="Quarters, eighths and a half note in one bar." time="4/4" pattern="q e e h | e e e e q q" tempo=76}}
+
+
+<!-- ================================================================== -->
+<h2>Rests</h2>
+<p>Every note value has a <b>rest</b> of the same length: a silence you count through. Keep counting during rests —
+they are as much part of the rhythm as the notes. A whole rest hangs below the line; a half rest sits on top of it.</p>
+
+{{> rhythm-exercise compact=true name="Half rest" note="2 beats of silence" time="4/4" pattern="h hr" tempo=80}}
+{{> rhythm-exercise compact=true name="Quarter rests" note="1 beat each" time="4/4" pattern="q qr q qr" tempo=80}}
+{{> rhythm-exercise compact=true name="Eighth rests" note="notes on the “&”" time="4/4" pattern="er e er e er e er e" tempo=80}}
+{{> rhythm-exercise compact=true name="Whole rest" note="a bar of silence" time="4/4" pattern="w | wr" tempo=80}}
+
+{{> rhythm-exercise name="Count through the gaps" note="Say every number, even the silent ones." time="4/4" pattern="q qr q q | hr q qr" tempo=80}}
+
+
+<!-- ================================================================== -->
+<h2>Dots and ties</h2>
+<p>A <b>dot</b> after a note makes it half as long again: a dotted half lasts 2 + 1 = 3 beats, a dotted quarter 1 + ½ = 1½.
+A <b>tie</b> — a curve joining two notes — makes them one longer sound: play the first and hold it through the second.
+Ties make lengths a single note can’t, and carry a note across a bar line.</p>
+
+{{> rhythm-exercise name="Dotted half" note="Three beats, then one." time="4/4" pattern="h. q | h. q" tempo=80}}
+{{> rhythm-exercise name="Dotted quarter and eighth" note="Long–short: the start of countless melodies." time="4/4" pattern="q. e q. e | q. e h" tempo=72}}
+{{> rhythm-exercise name="A tie" note="Sounds exactly like a dotted half and a quarter — written another way." time="4/4" pattern="h ~ q q | h ~ q q" tempo=80}}
+
+
+<!-- ================================================================== -->
+<h2>Time signatures</h2>
+<p>The two numbers at the start are the <b>time signature</b>. The top number says how many beats are in a bar;
+the bottom one says which note gets one beat — 4 for a quarter note, 8 for an eighth, 2 for a half.</p>
+
+<ul class="howto">
+  <li><b>4/4</b> — four quarter-note beats. Most pop, rock, hip-hop and folk. Also called common time, and written <b>C</b>.</li>
+  <li><b>3/4</b> — three beats, strong–weak–weak: waltzes, many folk songs and ballads.</li>
+  <li><b>2/4</b> — two beats: marches and polkas.</li>
+  <li><b>6/8</b> — six eighths, felt as two beats of three: “<b>1</b> &amp; a <b>2</b> &amp; a”. Ballads, jigs, a lot of soul.</li>
+  <li><b>12/8</b> — four beats of three: slow blues and doo-wop. <b>2/2</b> (cut time) — two half-note beats.
+  <b>5/4</b> and <b>7/8</b> — uneven bars, felt as 3 + 2 or 2 + 2 + 3.</li>
+</ul>
+
+<p>In 2/4, 3/4 and 4/4 each beat splits in two — that’s <b>simple time</b>. In 6/8, 9/8 and 12/8 each beat splits in three — <b>compound time</b>:
+the beat is a dotted quarter, eighths are beamed in threes, and the tempo counts dotted quarters.</p>
+
+{{> rhythm-exercise name="3/4: a waltz" note="Lean on the 1." time="3/4" pattern="h q | q q q | h. | q q q" tempo=108}}
+{{> rhythm-exercise name="2/4: a march" time="2/4" pattern="q q | e e q | q e e | h" tempo=104}}
+{{> rhythm-exercise name="6/8: two beats of three" note="The metronome clicks every eighth; the loud ones are the beats." time="6/8" pattern="e e e e e e | q e q e" tempo=60}}
+
+
+<!-- ================================================================== -->
+<h2>Triplets</h2>
+<p>A <b>triplet</b> squeezes three notes into the time of two, marked with a 3. Eighth-note triplets split one beat into three even parts,
+counted “<b>1</b> trip let <b>2</b> trip let”. Quarter-note triplets spread three notes evenly over two beats — they float against the beat, so count it carefully.</p>
+
+{{> rhythm-exercise name="Eighths, then triplets" note="Two notes to a beat, then three." time="4/4" pattern="e e e e [e e e] [e e e]" tempo=72}}
+{{> rhythm-exercise name="Quarter-note triplets" time="4/4" pattern="q q [q q q] | [q q q] h" tempo=72}}
+
+
+<!-- ================================================================== -->
+<h2>Syncopation</h2>
+<p><b>Syncopation</b> puts notes between the beats, or holds them through a beat, so the accent lands where you don’t expect it.
+The trick is to keep the beat steady in your head — count it out loud — and place the notes against it.</p>
+
+{{> rhythm-exercise name="Off the beat" note="Notes only on the “&”." time="4/4" pattern="er e er e er e er e" tempo=84}}
+{{> rhythm-exercise name="Short–long–short" note="The quarter note starts between beats 1 and 2." time="4/4" pattern="e q e q q | e q e h" tempo=80}}
+{{> rhythm-exercise name="Pushing the beat" note="The eighth on the “&” of 2 is tied into beat 3: it arrives early and holds." time="4/4" pattern="q e e ~ q q | q e e ~ q q" tempo=80}}
+{{> rhythm-exercise name="The Charleston" note="Dotted quarter, eighth — then silence." time="4/4" pattern="q. e hr | q. e hr" tempo=96}}
+
+
+<!-- ================================================================== -->
+<h2>Swing</h2>
+<p>In jazz, blues and shuffles, pairs of eighths aren’t played evenly: the first is long and the second short,
+like the first and last notes of a triplet. Music usually writes plain eighths and marks the piece “swing”.
+These two look the same and sound different.</p>
+
+{{> rhythm-exercise name="Straight eighths" time="4/4" pattern="q e e q e e" tempo=100}}
+{{> rhythm-exercise name="Swung eighths" note="Long–short, long–short." time="4/4" pattern="q e e q e e" tempo=100 swing=true}}
+
+
+<!-- ================================================================== -->
+<h2>Common drum beats</h2>
+<p>Drum music uses the staff differently: each line or space is a drum, not a pitch. The hands play the <b>hi-hat</b>
+(an × above the staff) and the <b>snare</b> (the middle space) with stems up; the right foot plays the <b>bass drum</b>
+(the bottom space) with stems down. Almost every beat here puts the snare on 2 and 4 — the <b>backbeat</b>.</p>
+
+<p class="hear">Hear each one:
+  <button type="button" data-hit="hh">Hi-hat</button>
+  <button type="button" data-hit="sn">Snare</button>
+  <button type="button" data-hit="bd">Bass drum</button>
+</p>
+
+{{> rhythm-exercise name="Rock beat" note="Eighths on the hi-hat, bass drum on 1 and 3, snare on 2 and 4." time="4/4" tempo=96
+    hands="e:hh e:hh e:hh+sn e:hh e:hh e:hh e:hh+sn e:hh" feet="q:bd q_ q:bd q_"}}
+{{> rhythm-exercise name="Rock beat, busier foot" note="An extra bass drum on the “&” of 3." time="4/4" tempo=96
+    hands="e:hh e:hh e:hh+sn e:hh e:hh e:hh e:hh+sn e:hh" feet="q:bd q_ e:bd e:bd q_"}}
+{{> rhythm-exercise name="Four on the floor" note="Bass drum on every beat: disco, house, dance pop." time="4/4" tempo=120
+    hands="e:hh e:hh e:hh+sn e:hh e:hh e:hh e:hh+sn e:hh" feet="q:bd q:bd q:bd q:bd"}}
+{{> rhythm-exercise name="Half-time" note="Snare only on 3: the same tempo feels twice as slow." time="4/4" tempo=96
+    hands="e:hh e:hh e:hh e:hh e:hh+sn e:hh e:hh e:hh" feet="q:bd q_ h_"}}
+{{> rhythm-exercise name="Shuffle" note="The rock beat, swung." time="4/4" tempo=92 swing=true
+    hands="e:hh e:hh e:hh+sn e:hh e:hh e:hh e:hh+sn e:hh" feet="q:bd q_ q:bd q_"}}
+{{> rhythm-exercise name="Waltz" note="Bass drum on 1, snare and hi-hat on 2 and 3." time="3/4" tempo=108
+    hands="q_ q:hh+sn q:hh+sn" feet="q:bd h_"}}
+{{> rhythm-exercise name="6/8 ballad" note="Snare on the second big beat." time="6/8" tempo=50
+    hands="e:hh e:hh e:hh e:hh e:hh e:hh" feet="q:bd e_ q:sn e_"}}
+
+
+<!-- ================================================================== -->
+<h2>Practise it</h2>
+<p>A little every day beats a lot once a week. Work down the list; each step builds on the one before.</p>
+
+{{> rhythm-exercise random=true name="Sight-reading" note="Eight bars you haven’t seen before. While you play bars 5–8, bars 1–4 change; when you’re back on bar 1, bars 5–8 change. Read one line ahead." time="4/4" tempo=72}}
+<ol class="notes">
+  <li>Count every example out loud before you clap it — the number on each beat, “e &amp; a” in between. Counting is the skill; the clapping follows.</li>
+  <li>Slow an example down until you can clap it right three times in a row, then raise the tempo by 5–10 and do it again.</li>
+  <li>Once a rhythm is solid, switch the metronome off and see whether your beat stays steady without it.</li>
+  <li>Take any chord you know and play it in each rhythm on this page — rhythm is what turns a chord into a song.</li>
+  <li>For the drum beats, tap the hi-hat with your right hand, the snare with your left and the bass drum with your foot.
+  Learn each limb on its own, slowly, then put them together.</li>
+  <li>Test yourself: how many eighth notes fill a bar of 3/4? How long is a dotted half? Where is the second beat in 6/8?
+  Does <b>q. e</b> sound different from a quarter tied to an eighth, then an eighth?
+    <details><summary>Answers</summary>Six · three beats · on the fourth eighth note · no — they’re two ways to write the same rhythm.</details></li>
+</ol>
+
+<h2>Worth remembering</h2>
+<ul class="notes">
+  <li>The beat never stops: notes and rests are both measured against it.</li>
+  <li>Each note value is half the one above it; a dot adds half again; a tie joins two notes into one.</li>
+  <li>Top number: beats in a bar. Bottom number: which note is one beat.</li>
+  <li>Simple time splits the beat in two, compound time (6/8, 12/8) in three; triplets borrow a three-way split inside simple time.</li>
+  <li>On drums, the backbeat — snare on 2 and 4 — is what makes a beat sound like rock and pop.</li>
+</ul>
+
+{{/layout}}
