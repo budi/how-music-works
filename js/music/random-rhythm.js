@@ -87,7 +87,7 @@ function cells(time, level, swing) {
 }
 
 const startsWithRest = (cell) => /^\[?[whqes]\.?r/.test(cell.text);
-const allRests = (bar) => bar.every((c) => /^(\S*r\s*)+$/.test(c.text));
+const allRests = (bar) => bar.every((c) => readNotes(c.text).every((e) => e.rest));
 
 // one bar; the first bar starts on a note, so the line has somewhere to begin
 function bar(time, pool, first, random) {
