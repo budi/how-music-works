@@ -150,7 +150,9 @@ async function buildIcons(outDir) {
   const square = svg.replace(/(<rect class="bg"[^>]*?) rx="[\d.]+"/, '$1');
   if (square === svg) throw new Error(`${ICON}: expected a <rect class="bg" rx="..."> background`);
 
-  await writeFile(join(outDir, ICON), svg.replace(/<!--[\s\S]*?-->/g, '').replace(/>\s+</g, '><').trim());
+  // a parser, not a regex, takes out the notes: SVG is XML, so keep tag case and self-closing slashes
+  const shipped = await minifyHtml(svg, { removeComments: true, collapseWhitespace: true, keepClosingSlash: true, caseSensitive: true });
+  await writeFile(join(outDir, ICON), shipped);
   await writeFile(join(outDir, 'favicon.ico'), ico([16, 32, 48].map((size) => png(svg, size))));
   await writeFile(join(outDir, 'apple-touch-icon.png'), png(square, 180));
   return [ICON, 'favicon.ico', 'apple-touch-icon.png'];
