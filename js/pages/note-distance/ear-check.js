@@ -5,12 +5,13 @@
  * @module pages/note-distance/ear-check
  */
 import { SYLLABLES, degreeName, describeMove, earQuestion } from '../../music/solfege.js';
+import { quizScore } from '../../ui/score.js';
 import { degreeHtml, ladder, showJump } from './drawings.js';
 import { hear } from './your-do.js';
 
 export function setupEarCheck(el) {
-  // right: questions answered right on the first try
-  const state = { direction: 'up', question: null, right: 0, asked: 0, answered: false, missed: false };
+  const state = { direction: 'up', question: null, answered: false };
+  const score = quizScore();
   el.innerHTML =
     '<div class="ec-body">' +
       `<div class="ec-ladder">${ladder()}</div>` +
@@ -44,8 +45,7 @@ export function setupEarCheck(el) {
     const last = state.question && state.question.from === (state.direction === 'down' ? 8 : 1) ? state.question.to : undefined;
     state.question = earQuestion(state.direction, { previous: last });
     state.answered = false;
-    state.missed = false;
-    state.asked++;
+    score.ask();
     showJump(el, null, null);
     $('.ec-result').textContent = '';
     $('.ec-again').disabled = false;
@@ -58,14 +58,14 @@ export function setupEarCheck(el) {
     if (!q || state.answered) return;
     if (Number(btn.dataset.degree) === q.to) {
       state.answered = true;
-      if (!state.missed) state.right++;
+      score.hit();
       btn.classList.add('is-right');
       el.querySelectorAll('.ec-answer').forEach((b) => { b.disabled = b !== btn; });
       $('.ec-result').textContent = `Yes: ${degreeName(q.from)} → ${degreeName(q.to)} is ${describeMove(q.from, q.to)}.`;
-      $('.ec-score').textContent = `${state.right} of ${state.asked} right first time.`;
+      $('.ec-score').textContent = score.text;
       showJump(el, q.from, q.to);
     } else {
-      state.missed = true;
+      score.miss();
       btn.classList.add('is-wrong');
       btn.disabled = true;
       $('.ec-result').textContent = 'Not that one. Listen again, and try another.';

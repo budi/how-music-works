@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { ALSO_SPELLED, CIRCLE_OF_FIFTHS, DEGREES, diatonicChords, keySignature, majorScale, relativeMinor } from '../../js/music/keys.js';
-import { mod12, pitchClass } from '../../js/music/pitch.js';
+import { ALSO_SPELLED, CIRCLE_OF_FIFTHS, DEGREES, MAJOR_STEPS, diatonicChords, keySignature, majorScale, relativeMinor, scalePitches } from '../../js/music/keys.js';
+import { mod12, parsePitch, pitchClass } from '../../js/music/pitch.js';
 
 describe('keys', () => {
   it('lists twelve keys round the circle of fifths', () => {
@@ -20,6 +20,15 @@ describe('keys', () => {
     for (const key of CIRCLE_OF_FIFTHS) {
       const letters = majorScale(key).map((n) => n[0]);
       assert.equal(new Set(letters).size, 7, key);
+    }
+  });
+
+  it('writes every scale up an octave from octave 4, whole whole half whole whole whole half', () => {
+    assert.deepEqual(scalePitches('A'), ['A4', 'B4', 'C#5', 'D5', 'E5', 'F#5', 'G#5', 'A5']);
+    assert.deepEqual(scalePitches('F#').slice(-2), ['E#5', 'F#5']);
+    for (const key of CIRCLE_OF_FIFTHS) {
+      const midis = scalePitches(key).map((p) => parsePitch(p).midi);
+      assert.deepEqual(midis.slice(1).map((m, i) => m - midis[i]), MAJOR_STEPS, key);
     }
   });
 

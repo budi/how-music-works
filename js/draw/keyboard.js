@@ -57,9 +57,11 @@ const KEY = { w: 26, h: 112, bw: 16, bh: 70 };
  * @param {boolean} [options.names=true]  false: name only middle C underneath
  * @param {boolean} [options.keyNames]  write every key's name on it, hidden until CSS
  *   shows it (.show-names)
+ * @param {Object<number, string>} [options.tags]  a word in a dot on keys, white or
+ *   black, by MIDI number: { 66: 'F♯' }, spelled as the caller likes
  * @returns {string} SVG
  */
-export function drawKeyboard({ from, to, marks, highlight, names = true, keyNames = false }) {
+export function drawKeyboard({ from, to, marks, highlight, names = true, keyNames = false, tags = {} }) {
   const marked = words(marks);
   const isMarked = new Set(marked.map((m) => parsePitch(m).midi));
   const hi = highlight ? parsePitch(highlight).midi : null;
@@ -68,17 +70,20 @@ export function drawKeyboard({ from, to, marks, highlight, names = true, keyName
   const lit = (midi) => (midi === hi ? ' is-highlight' : '');
   const out = [];
 
+  const tag = (x, y, r, midi) => circle(x, y, r, 'ktag-dot') + text(x, y + 3.2, tags[midi], 'ktag');
   for (const k of whites) {
     const name = keyName(k.pitch);
     const parts = rect(k.x, 1, KEY.w, KEY.h, 'kw' + (isMarked.has(k.pitch) ? ' is-marked' : '') + lit(k.pitch), 3) +
       (isMarked.has(k.pitch) ? circle(k.x + KEY.w / 2, KEY.h - 16, 5, 'kdot' + lit(k.pitch)) : '') +
-      (keyNames ? text(k.x + KEY.w / 2, KEY.bh + 15, name, 'kname') : '');
+      (tags[k.pitch] ? tag(k.x + KEY.w / 2, KEY.h - 16, 10, k.pitch) : '') +
+      (keyNames && !tags[k.pitch] ? text(k.x + KEY.w / 2, KEY.bh + 15, name, 'kname') : '');
     out.push(el('g', { class: 'key', 'data-midi': k.pitch, 'data-name': name }, parts));
   }
   // black keys come in groups of two (C♯ D♯) and three (F♯ G♯ A♯)
   for (const k of blacks) {
     const parts = rect(k.x, 1, KEY.bw, KEY.bh, 'kb', 2) +
-      (keyNames ? keySpellings(k.pitch).map((n, i) => text(k.x + KEY.bw / 2, KEY.bh - 18 + i * 10, n, 'kname on-black')).join('') : '');
+      (tags[k.pitch] ? tag(k.x + KEY.bw / 2, KEY.bh - 12, 7.5, k.pitch)
+        : keyNames ? keySpellings(k.pitch).map((n, i) => text(k.x + KEY.bw / 2, KEY.bh - 18 + i * 10, n, 'kname on-black')).join('') : '');
     out.push(el('g', { class: 'key', 'data-midi': k.pitch, 'data-name': keyName(k.pitch) }, parts));
   }
 

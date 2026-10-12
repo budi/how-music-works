@@ -1,0 +1,108 @@
+{{#> layout
+    title="The major scale — build it in every key, on piano and guitar"
+    styles=(list "player" "notes" "major-scale")
+    script="major-scale"
+    instrument=true}}
+
+{{#*inline "footer-note"}}
+  <span class="only-g">The neck shows one common shape for each scale, not the only one.</span>
+  <span class="only-p">The fingerings are for one octave, the way most teachers start.</span>
+{{/inline}}
+
+<noscript><p class="noscript">The scales and the quiz on this page are drawn and played with JavaScript — please turn it on.</p></noscript>
+
+<h1>The major scale</h1>
+<p class="lede">Most of the music you know is built from the seven notes of a major scale. This page shows the recipe that makes one,
+builds it from any root, shows it on the staff, the piano and the guitar neck, and ends with a game: find the missing note.
+Switch between guitar and piano with the toggle at the top.</p>
+
+
+<!-- ================================================================== -->
+<h2>One recipe</h2>
+<p>A major scale climbs from its <b>root</b> to the same note an octave higher in seven steps:
+<b>whole, whole, half, whole, whole, whole, half</b> (W W H W W W H). A half step is the very next key or fret; a whole step is two.
+The <a href="note-distance.html">note distance</a> page lets you hear and sing those steps.</p>
+<p>The recipe never changes. Only the root does, and the root gives the scale its name: the scale that starts on G is G major.</p>
+
+
+<!-- ================================================================== -->
+<h2>Build one yourself</h2>
+<p>Every major scale can be worked out in two moves. Take G:</p>
+<ol class="notes">
+  <li><b>Write the seven letters</b>, starting from the root: G A B C D E F.</li>
+  <li><b>Walk the recipe</b> and fix any note that's in the wrong place. G to A is a whole step, A to B whole, B to C half: all right so far.
+    C to D and D to E are whole steps too. E to F should be whole, but it's only a half step, so F goes up a half step to <b>F♯</b>.
+    That leaves F♯ to G as the last half step, as it should be.</li>
+</ol>
+<p>So G major is G A B C D E F♯. Every letter appears exactly once; only its sharp or flat changes. That's why F major has <b>B♭</b> rather
+than A♯: A is already there as the third note, and without B♭ the scale would have two As and no B.</p>
+
+
+<!-- ================================================================== -->
+<h2>Every major scale</h2>
+<p>Pick a root. The row shows each note with its number and the step that leads to the next one.
+Tap any note to hear it, or press Play to hear the scale go up and back down.</p>
+<div class="ms-explorer" id="scale-explorer"></div>
+
+
+<!-- ================================================================== -->
+<h2>Sharps or flats, never both</h2>
+<p>Because each letter comes once, a major scale uses only sharps or only flats, never a mix. C major has neither: it's the white keys.
+G has one sharp, D two, A three; F has one flat, B♭ two, E♭ three. Going round the
+<a href="number-system.html">circle of fifths</a> adds one sharp, or takes away one flat, at each step.</p>
+<p>A few scales reach notes that look odd at first: F♯ major has <b>E♯</b>, which is the key you'd otherwise call F. It has to be called E♯
+because the scale needs an E and already has an F♯.</p>
+
+
+<!-- ================================================================== -->
+<h2>Numbers instead of letters</h2>
+<p>Musicians number the notes of a scale 1 to 7, starting from the root. In C major, the 4 is F; in G major, the 4 is C.
+The numbers describe a note's place in the scale, so they work in every key. They're the same numbers that do re mi fa sol la ti sings, and the same
+ones the <a href="number-system.html">number system</a> uses to name the chord built on each note.</p>
+
+
+<!-- ================================================================== -->
+<h2>Under your fingers</h2>
+<div class="only-p">
+  <p>On the piano, the thumb is finger 1 and the little finger is 5. For C major, the right hand plays <b>1 2 3, 1 2 3 4 5</b> going up: after the third
+  finger, the thumb tucks under to play F. The left hand goes <b>5 4 3 2 1, 3 2 1</b>, with the third finger crossing over the thumb.</p>
+  <p>The same fingering works for G, D, A and E major. F major is the first exception: its right hand plays 1 2 3 4, 1 2 3 4, so the thumb never lands on B♭.</p>
+</div>
+<div class="only-g">
+  <p>On the guitar, a scale is a hand shape you slide along the neck: the same shape plays every major scale whose root is on the same string. Put your second finger on the root, and give each finger one fret, from the fret below the root up to two above it.
+  The explorer above shows the shape for the key you pick.</p>
+  <p>With the root on string 6, the shape covers strings 6, 5 and 4. With the root on string 5 it moves over one string but stays the same.
+  Slide it up or down the neck to change key: at fret 3 on string 6 it's G major, at fret 5 it's A major.</p>
+  <p>Start the root on string 4 or 3 and the shape changes a little. String 2 is tuned a half step closer to string 3 than the other strings are to their neighbours,
+  so every note the shape plays on string 2 or 1 moves up a fret. Pick <b>Root on string</b> in the explorer to compare all four.</p>
+</div>
+
+
+<!-- ================================================================== -->
+<h2>Find the missing note</h2>
+<p>You're given the key. Find the note with the number asked: say, the 4 in C major.
+<b>The other notes</b> shows the rest of the scale and its steps. <b>Only the root</b> leaves you to walk the recipe in your head.
+Answer on the <span class="only-p">piano, in any octave</span><span class="only-g">guitar neck, on any string</span>. Each answer
+plays the scale from the root up to it, so you hear where the note sits.</p>
+<div class="quiz ms-quiz" id="scale-quiz"></div>
+
+
+<!-- ================================================================== -->
+<h2>Practise it</h2>
+<ol class="notes">
+  <li>Say the recipe out loud until it comes without thinking: whole, whole, half, whole, whole, whole, half.</li>
+  <li>Play C, G, D and F major, up and down, saying the note names as you go. Then do the same with the numbers.</li>
+  <li>Play the quiz with the other notes shown until you rarely miss. Then switch to only the root.</li>
+  <li>Add all twelve keys. Watch for the sharp and flat keys: every letter comes once, so pick the right name.</li>
+  <li>Away from the instrument, name a scale in your head: E major? E F♯ G♯ A B C♯ D♯.</li>
+</ol>
+
+<h2>Worth remembering</h2>
+<ul class="notes">
+  <li>Every major scale goes whole, whole, half, whole, whole, whole, half.</li>
+  <li>Each letter appears once, so a scale has either sharps or flats, never both.</li>
+  <li>The half steps fall between 3 and 4 and between 7 and the root above.</li>
+  <li>Numbers name the notes in every key: the 5 of C is G, the 5 of G is D.</li>
+</ul>
+
+{{/layout}}

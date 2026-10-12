@@ -96,7 +96,7 @@ export function chordTimeline(chords, { instrument, bpm = 80, strum = 'bar' }) {
 }
 
 /**
- * A tune on piano, one note a beat: a staff played back, or a pattern to sing.
+ * A tune, one note a beat: a staff played back, or a pattern to sing.
  * There's no metronome (clicks over singing only get in the way), but there
  * is a bar of four to count in with.
  * @param {number[]} midis
@@ -105,15 +105,16 @@ export function chordTimeline(chords, { instrument, bpm = 80, strum = 'bar' }) {
  * @param {number} [options.group=1]  notes in a group; each group starts with an accent
  * @param {boolean} [options.echo]  after each group, as many beats of silence, to sing it back
  * @param {number} [options.gate=0.95]  how much of its beat a note lasts
+ * @param {string} [options.instrument='piano']  or 'guitar'
  * @returns {Timeline}  a step per note ({ voice: 'notes', index })
  */
-export function melodyTimeline(midis, { bpm = 80, group = 1, echo = false, gate = 0.95 } = {}) {
+export function melodyTimeline(midis, { bpm = 80, group = 1, echo = false, gate = 0.95, instrument = 'piano' } = {}) {
   const beat = 60 / bpm;
   const notes = [];
   const steps = [];
   let t = 0;
   midis.forEach((midi, i) => {
-    notes.push({ at: t, sounds: [], accent: i % group === 0, chord: { instrument: 'piano', notes: [midi], length: beat * gate } });
+    notes.push({ at: t, sounds: [], accent: i % group === 0, chord: { instrument, notes: [midi], length: beat * gate } });
     steps.push({ at: t, voice: 'notes', index: i });
     t += beat;
     const groupEnds = i % group === group - 1 || i === midis.length - 1;

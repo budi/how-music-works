@@ -1,0 +1,66 @@
+/*
+ * major-scale.css — the major scale page: the scale explorer
+ * (js/pages/major-scale/explorer.js) and the missing-note quiz
+ * (js/pages/major-scale/quiz.js). Staves, keys, the neck and the quiz's
+ * pad come from notes.css, play controls from player.css.
+ */
+
+/* ---------- a scale as a row: numbers, names, and the steps between ---------- */
+
+.ms-row { display: flex; align-items: center; margin: 12px 0; }
+.ms-cell {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 0 6px;
+  border-radius: 4px;
+  background: var(--paper);
+}
+.ms-cell b { font-size: 11px; font-weight: 600; color: var(--soft); }
+.ms-cell span { font-size: 17px; font-weight: 650; min-height: 1.3em; }
+.ms-cell.is-root { background: var(--ink); color: var(--paper); }
+.ms-cell.is-root b { color: var(--paper); opacity: .7; }
+.ms-cell.is-ask { outline: 2px solid var(--now); outline-offset: -2px; }
+.ms-cell.is-ask span { color: var(--now); }
+.ms-cell.is-right { outline-color: var(--maj); background: #a8cbb6; }
+.ms-cell.is-right span { color: var(--ink); }
+.ms-step { flex: 0 0 auto; width: 16px; text-align: center; font-size: 11px; font-weight: 650; color: var(--soft); }
+.ms-step.is-half { color: var(--now); }
+.ms-row.no-steps { gap: 4px; }
+
+/* ---------- the explorer ---------- */
+
+.ms-explorer { background: var(--card); border-radius: 4px; padding: 14px; margin: 0 0 18px; }
+.ms-pick { display: flex; flex-wrap: wrap; gap: 4px; }
+.ms-strings { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin: 10px 0 0; }
+.ms-strings span { font-size: 13px; color: var(--soft); margin-right: 4px; }
+.ms-pick button, .ms-strings button {
+  min-width: 38px;
+  padding: 5px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-weight: 600;
+  cursor: pointer;
+}
+.ms-pick button[aria-pressed="true"], .ms-strings button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.ms-about, .ms-shape { font-size: 14px; color: var(--soft); margin: 4px 0 10px; }
+.ms-staff { margin: 4px 0 8px; }
+.ms-neck { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 6px 0 4px; }
+/* the neck at its real size where there's room, never so small it's hard to tap */
+.ms-neck svg { width: clamp(calc(var(--w, 510) * 0.9px), 100%, calc(var(--w, 510) * 1.3px)); max-width: none; }
+.ms-explorer .ms-play { margin-top: 8px; }
+
+/* ---------- the quiz (its pad, result and score: notes.css) ---------- */
+
+.ms-ask { font-size: 18px; text-align: center; margin: 16px 0 4px; }
+.ms-quiz .quiz-pad { margin-top: 10px; }
+.ms-quiz .key.is-root .ktag-dot { fill: var(--ink); }
+.ms-next-row { text-align: center; margin: 8px 0; min-height: 34px; }
+
+@media print {
+  .ms-explorer { background: none; }
+  .ms-play { display: none; }
+}

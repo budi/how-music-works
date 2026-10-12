@@ -57,6 +57,11 @@ export function spell(letter, accidental) {
   return LETTERS[mod(letter, 7)] + (accidental > 0 ? '#'.repeat(accidental) : 'b'.repeat(-accidental));
 }
 
+/** A note name as printed: printed('F#') → 'F♯', printed('Bbb') → 'B♭♭' */
+export function printed(name) {
+  return name[0] + [...name.slice(1)].map((sign) => SIGNS[sign]).join('');
+}
+
 /**
  * The name players read fastest: 'A' rather than 'Bbb', 'E' rather than 'Fb'.
  * Single sharps and flats, E# and B# included, stay as they are.

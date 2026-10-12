@@ -12,6 +12,7 @@
  * @module music/guitar
  */
 import { mod12, pitchClass } from './pitch.js';
+import { MAJOR_STEPS } from './keys.js';
 
 /** The open strings as MIDI notes, string 6 to string 1: E2 A2 D3 G3 B3 E4. */
 export const STRINGS = [40, 45, 50, 55, 59, 64];
@@ -216,6 +217,74 @@ export function guitarShapes(root, flavourId) {
     const position = neckPosition(frets);
     return { name: form.name, frets, barre: voicing.barre, position, label: position === 0 ? 'open' : 'fret ' + position };
   }).sort((a, b) => a.position - b.position);
+}
+
+/**
+ * Every place on the neck a note can be played, frets 0 to `frets`:
+ * fretPositions('A', 5) → [{ string: 6, fret: 5, midi: 45 }, { string: 5, fret: 0, midi: 45 }, …]
+ * (strings numbered as players do: 6 is low E, 1 high E)
+ */
+export function fretPositions(note, frets = 12) {
+  const pc = pitchClass(note);
+  const out = [];
+  STRINGS.forEach((open, i) => {
+    for (let fret = mod12(pc - open); fret <= frets; fret += 12) out.push({ string: 6 - i, fret, midi: open + fret });
+  });
+  return out;
+}
+
+// Where the hand goes for one octave from a root on the neck: the window of
+// frets it covers, each note on the lowest string inside it. First choices
+// first — second finger on the root, then first finger — and a fifth fret
+// only if four can't hold it (from string 4 the scale crosses onto string 2,
+// which is tuned a half step closer than the others, so it reaches one further).
+const WINDOWS = [[-1, 2], [0, 3], [-2, 1], [-1, 3], [0, 4]];
+
+// At the nut, the open strings do the stretching: frets 0 to 3, or 0 to 4.
+const OPEN_WINDOWS = (rootFret) => [3, 4].map((top) => [-rootFret, top - rootFret]);
+
+function fitShape(rootIndex, rootFret, windows = WINDOWS) {
+  for (const [low, high] of windows) {
+    let s = rootIndex;
+    let semitones = 0;
+    const notes = [];
+    for (const [i, step] of [0, ...MAJOR_STEPS].entries()) {
+      semitones += step;
+      const midi = STRINGS[rootIndex] + rootFret + semitones;
+      while (s < 5 && midi - STRINGS[s] > rootFret + high) s++;
+      const fret = midi - STRINGS[s];
+      if (fret < rootFret + low || fret > rootFret + high) break;
+      notes.push({ degree: i + 1, string: 6 - s, fret, midi });
+    }
+    if (notes.length === 8) return { notes, from: rootFret + low, to: rootFret + high };
+  }
+  throw new Error('No scale shape from string ' + (6 - rootIndex));
+}
+
+/**
+ * One octave of a major scale as a hand shape that slides along the neck:
+ * one finger per fret, each note on the lowest string it fits. Off the nut
+ * (no open strings), so the same shape moves to every key. Where that puts it
+ * an octave up, past fret 12, `open` is the octave below too: at the nut, in
+ * a shape of its own that uses the open strings.
+ * majorShape('G') → { string: 6, from: 2, to: 5, notes: [{ degree: 1, string: 6, fret: 3, midi: 43 }, …, { degree: 8, string: 4, fret: 5, midi: 55 }] }
+ * @param {string} key
+ * @param {number} [string]  the root's string, 6 to 3; by default 6, or 5 where
+ *   string 6 would put the root near the nut or high up
+ * @returns {{string: number, from: number, to: number, notes: Array<{degree: number, string: number, fret: number, midi: number}>,
+ *   open: ?{from: number, to: number, notes: Array}}}
+ *   from, to: the frets the hand covers; notes: degrees 1–8; open: the shape at the nut, or null
+ */
+export function majorShape(key, string) {
+  const pc = pitchClass(key);
+  const onSix = mod12(pc - STRINGS[0]);
+  if (string == null) string = onSix >= 2 && onSix <= 7 ? 6 : 5;
+  if (!(string >= 3 && string <= 6)) throw new Error('A scale shape has its root on string 6, 5, 4 or 3, not ' + string);
+  const index = 6 - string;
+  const fret = mod12(pc - STRINGS[index]);
+  const shape = fitShape(index, fret);
+  if (shape.from >= 1) return { string, ...shape, open: null };
+  return { string, ...fitShape(index, fret + 12), open: fitShape(index, fret, OPEN_WINDOWS(fret)) };
 }
 
 /** The notes a voicing sounds, as MIDI numbers, low to high: guitarNotes([null, 3, 2, 0, 1, 0]) → [48, 52, 55, 60, 64] */

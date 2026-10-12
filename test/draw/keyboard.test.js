@@ -40,4 +40,13 @@ describe('a keyboard to play on', () => {
     assert.deepEqual($$(s, '.kname:not(.on-black)').slice(0, 3).map((t) => t.textContent), ['G3', 'A3', 'B3']);
     assert.deepEqual($$(s, '.kname.on-black').slice(0, 2).map((t) => t.textContent), ['G♯', 'A♭']);
   });
+
+  it('writes a word in a dot on any key, white or black, in place of its name', () => {
+    const s = svg({ from: 'C4', to: 'B4', keyNames: true, tags: { 62: 'D', 66: 'F♯' } });
+    const key = (midi) => s.querySelector(`.key[data-midi="${midi}"]`);
+    assert.equal(key(62).querySelector('.ktag').textContent, 'D');
+    assert.equal(key(66).querySelector('.ktag').textContent, 'F♯');
+    assert.equal(key(66).querySelector('.kname'), null, 'its own names make way');
+    assert.equal($$(s, '.ktag').length, 2);
+  });
 });

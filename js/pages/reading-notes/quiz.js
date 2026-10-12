@@ -12,6 +12,7 @@ import { sharedPlayer } from '../../audio/player.js';
 import { sizeToDrawing } from '../../lib/dom.js';
 import { pick } from '../../lib/random.js';
 import { plural } from '../../lib/text.js';
+import { quizScore } from '../../ui/score.js';
 
 // the notes it asks: the staff, and up to three ledger lines beyond it either way
 const ROOM = [-5, 13];
@@ -51,11 +52,11 @@ export function noteQuestion(clef, { previous, accidentals = false, random } = {
 }
 
 export function setupQuiz(el) {
-  const state = { clef: 'treble', accidentals: false, names: true, sound: true, question: null, missed: false, answered: false,
-    right: 0, asked: 0, streak: 0, next: null };
+  const state = { clef: 'treble', accidentals: false, names: true, sound: true, question: null, answered: false, next: null };
+  const score = quizScore();
 
   el.innerHTML =
-    '<div class="rhythm-controls nq-settings">' +
+    '<div class="rhythm-controls">' +
       '<label class="rhythm-select">Clef <select data-setting="clef">' +
         '<option value="treble">treble</option><option value="bass">bass</option><option value="both">both</option></select></label>' +
       '<label class="rhythm-check"><input type="checkbox" data-setting="accidentals"> Sharps and flats</label>' +
@@ -63,9 +64,9 @@ export function setupQuiz(el) {
       '<label class="rhythm-check"><input type="checkbox" data-setting="sound" checked> Sound</label>' +
     '</div>' +
     '<div class="nq-staff staff-art" aria-live="polite"></div>' +
-    '<div class="nq-keys show-names"></div>' +
-    '<p class="nq-result" aria-live="polite"></p>' +
-    '<p class="nq-score">Read the note, then press its key — the right one, in the right octave.</p>';
+    '<div class="nq-keys quiz-pad show-names"></div>' +
+    '<p class="quiz-result" aria-live="polite"></p>' +
+    '<p class="quiz-score">Read the note, then press its key — the right one, in the right octave.</p>';
   const $ = (selector) => el.querySelector(selector);
 
   // the keyboard for the clef: the quiz's range, middle C marked
@@ -84,9 +85,8 @@ export function setupQuiz(el) {
   function ask() {
     clearTimeout(state.next);
     const q = state.question = noteQuestion(state.clef, { previous: state.question, accidentals: state.accidentals });
-    state.missed = false;
     state.answered = false;
-    state.asked++;
+    score.ask();
     const staff = $('.nq-staff');
     staff.innerHTML = drawStaff({
       ...(state.clef === 'both' ? { clef: 'grand', notes: q.note + (q.clef === 'treble' ? '@t' : '@b') } : { clef: q.clef, notes: q.note }),
@@ -97,7 +97,7 @@ export function setupQuiz(el) {
     });
     sizeToDrawing(staff);
     el.querySelectorAll('.nq-keys .key').forEach((k) => k.classList.remove('is-right', 'is-wrong'));
-    $('.nq-result').textContent = '';
+    $('.quiz-result').textContent = '';
   }
 
   function answer(midi) {
@@ -108,21 +108,20 @@ export function setupQuiz(el) {
     if (state.sound) sharedPlayer().strum('piano', [midi]);
     if (midi === n.midi) {
       state.answered = true;
-      if (state.missed) state.streak = 0;
-      else { state.right++; state.streak++; }
+      score.hit();
       key.classList.add('is-right');
       $('.nq-staff .sn').classList.add('is-right');
-      $('.nq-result').textContent = 'Yes: ' + describePosition(n, q.clef) + '.';
+      $('.quiz-result').textContent = 'Yes: ' + describePosition(n, q.clef) + '.';
       state.next = setTimeout(ask, 1300);
     } else {
-      state.missed = true;
+      score.miss();
       key.classList.add('is-wrong');
       const octaves = (n.midi - midi) / 12;
-      $('.nq-result').textContent = octaves === Math.round(octaves)
+      $('.quiz-result').textContent = octaves === Math.round(octaves)
         ? `Right note, wrong octave: that’s ${keyName(midi)}. Go ${octaves > 0 ? 'up' : 'down'} ${plural(Math.abs(octaves), 'octave')}.`
         : `Not that one — you pressed ${keyName(midi)}. Go ${n.midi > midi ? 'higher' : 'lower'}.`;
     }
-    $('.nq-score').textContent = `${state.right} of ${state.asked} right first time` + (state.streak > 1 ? ` · ${state.streak} in a row` : '') + '.';
+    $('.quiz-score').textContent = score.text;
   }
 
   el.addEventListener('click', (e) => {

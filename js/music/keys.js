@@ -5,6 +5,7 @@
  */
 import { transpose } from './intervals.js';
 import { chordName } from './chords.js';
+import { LETTERS } from './pitch.js';
 
 /** The seven chords of every major key, in order. This row never changes. */
 export const DEGREES = [
@@ -26,6 +27,18 @@ export const ALSO_SPELLED = { 'F#': 'Gb' };
 /** majorScale('D') → ['D', 'E', 'F#', 'G', 'A', 'B', 'C#'] */
 export function majorScale(key) {
   return DEGREES.map((d) => transpose(key, d.interval));
+}
+
+/** The steps between the notes of every major scale, in half steps: whole, whole, half, whole, whole, whole, half. */
+export const MAJOR_STEPS = [2, 2, 1, 2, 2, 2, 1];
+
+/**
+ * A major scale up an octave from its root in octave 4, written as pitches:
+ * scalePitches('G') → ['G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F#5', 'G5']
+ */
+export function scalePitches(key) {
+  const first = LETTERS.indexOf(key[0]);
+  return [...majorScale(key), key].map((name, i) => name + (4 + Math.floor((first + i) / 7)));
 }
 
 /** The seven chords of a key, in order: [{ degree, root, quality, name }] */

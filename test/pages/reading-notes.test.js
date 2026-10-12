@@ -88,7 +88,7 @@ describe('the note quiz', () => {
   const shown = () => $('.nq-staff .sn', quiz());
   const key = (midi) => $(`.nq-keys .key[data-midi="${midi}"]`, quiz());
   const pressKey = (midi) => press($('rect', key(midi)));
-  const result = () => $('.nq-result', quiz()).textContent;
+  const result = () => $('.quiz-result', quiz()).textContent;
   const choose = (setting, value) => {
     const el = $(`[data-setting="${setting}"]`, quiz());
     if (el.type === 'checkbox') el.checked = value; else el.value = value;
@@ -123,13 +123,13 @@ describe('the note quiz', () => {
     pressKey(55); // G3
     assert.ok(key(55).classList.contains('is-right'));
     assert.equal(result(), 'Yes: G3, just below the second ledger line under the treble staff.');
-    assert.equal($('.nq-score', quiz()).textContent, '0 of 1 right first time.');
+    assert.equal($('.quiz-score', quiz()).textContent, '0 of 1 right first time.');
     assert.equal(played(), 4, 'every key sounds as you press it');
     await until(() => shown().dataset.name !== 'G3');
     assert.equal(shown().dataset.name, 'A3', 'a new note, never the same one twice');
     assert.equal($$('.nq-keys .is-wrong, .nq-keys .is-right', quiz()).length, 0, 'the keyboard is cleared');
     pressKey(57);
-    assert.equal($('.nq-score', quiz()).textContent, '1 of 2 right first time.');
+    assert.equal($('.quiz-score', quiz()).textContent, '1 of 2 right first time.');
   });
 
   it('asks sharps and flats when ticked, answered on the black keys', () => {

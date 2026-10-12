@@ -1,10 +1,14 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { parsePitch, pitchClass, simplify } from '../../js/music/pitch.js';
+import { parsePitch, pitchClass, printed, simplify } from '../../js/music/pitch.js';
 
 describe('notes', () => {
   it('reads note names as pitch classes', () => {
     assert.deepEqual(['C', 'F#', 'Bb', 'B#', 'Cb', 'Bbb', 'F##'].map(pitchClass), [0, 6, 10, 0, 11, 9, 7]);
+  });
+
+  it('prints sharps and flats as signs', () => {
+    assert.deepEqual(['C', 'F#', 'Bb', 'Bbb'].map(printed), ['C', 'F♯', 'B♭', 'B♭♭']);
   });
 
   it('simplifies awkward spellings only', () => {
