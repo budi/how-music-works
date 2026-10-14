@@ -17,6 +17,9 @@ import { MAJOR_STEPS } from './keys.js';
 /** The open strings as MIDI notes, string 6 to string 1: E2 A2 D3 G3 B3 E4. */
 export const STRINGS = [40, 45, 50, 55, 59, 64];
 
+/** Why a shape shifts a fret where it crosses from string 3 to string 2, in words for the pages. */
+export const STRING_2_CLOSER = 'string 2 is tuned a half step closer to string 3 than the other strings are to their neighbours';
+
 /**
  * One common voicing per chord: what the chord tables show. Keyed by the
  * usual name; enharmonic spellings (C# / Db) share an entry.
@@ -262,6 +265,38 @@ function fitShape(rootIndex, rootFret, windows = WINDOWS) {
 }
 
 /**
+ * Where a key's root goes for the shapes built on it: on string 6 at frets
+ * 2–7, or else on string 5 (frets 3–8), away from the nut and not too high.
+ * rootPosition('G') → { string: 6, fret: 3, midi: 43 }; rootPosition('G', 4) → { string: 4, fret: 5, midi: 55 }
+ * @param {string} key
+ * @param {number} [string]  to put it on that string instead
+ */
+export function rootPosition(key, string) {
+  const pc = pitchClass(key);
+  const onSix = mod12(pc - STRINGS[0]);
+  if (string == null) string = onSix >= 2 && onSix <= 7 ? 6 : 5;
+  const fret = mod12(pc - STRINGS[6 - string]);
+  return { string, fret, midi: STRINGS[6 - string] + fret };
+}
+
+/**
+ * Where to play the note `size` half steps above a root, close to it: on the
+ * root's string or a higher one, as few frets away as it can be. These are the
+ * shapes players learn for each interval: a 5th one string over and two frets up.
+ * intervalPosition({ string: 6, fret: 3 }, 7) → { string: 5, fret: 5, midi: 50 }
+ */
+export function intervalPosition(root, size) {
+  const midi = STRINGS[6 - root.string] + root.fret + size;
+  let best = null;
+  for (let s = root.string; s >= 1; s--) {
+    const fret = midi - STRINGS[6 - s];
+    if (fret < 0) break;
+    if (!best || Math.abs(fret - root.fret) < Math.abs(best.fret - root.fret)) best = { string: s, fret, midi };
+  }
+  return best;
+}
+
+/**
  * One octave of a major scale as a hand shape that slides along the neck:
  * one finger per fret, each note on the lowest string it fits. Off the nut
  * (no open strings), so the same shape moves to every key. Where that puts it
@@ -269,22 +304,18 @@ function fitShape(rootIndex, rootFret, windows = WINDOWS) {
  * a shape of its own that uses the open strings.
  * majorShape('G') → { string: 6, from: 2, to: 5, notes: [{ degree: 1, string: 6, fret: 3, midi: 43 }, …, { degree: 8, string: 4, fret: 5, midi: 55 }] }
  * @param {string} key
- * @param {number} [string]  the root's string, 6 to 3; by default 6, or 5 where
- *   string 6 would put the root near the nut or high up
+ * @param {number} [string]  the root's string, 6 to 3; by default as rootPosition puts it
  * @returns {{string: number, from: number, to: number, notes: Array<{degree: number, string: number, fret: number, midi: number}>,
  *   open: ?{from: number, to: number, notes: Array}}}
  *   from, to: the frets the hand covers; notes: degrees 1–8; open: the shape at the nut, or null
  */
 export function majorShape(key, string) {
-  const pc = pitchClass(key);
-  const onSix = mod12(pc - STRINGS[0]);
-  if (string == null) string = onSix >= 2 && onSix <= 7 ? 6 : 5;
-  if (!(string >= 3 && string <= 6)) throw new Error('A scale shape has its root on string 6, 5, 4 or 3, not ' + string);
-  const index = 6 - string;
-  const fret = mod12(pc - STRINGS[index]);
-  const shape = fitShape(index, fret);
-  if (shape.from >= 1) return { string, ...shape, open: null };
-  return { string, ...fitShape(index, fret + 12), open: fitShape(index, fret, OPEN_WINDOWS(fret)) };
+  if (string != null && !(string >= 3 && string <= 6)) throw new Error('A scale shape has its root on string 6, 5, 4 or 3, not ' + string);
+  const root = rootPosition(key, string);
+  const index = 6 - root.string;
+  const shape = fitShape(index, root.fret);
+  if (shape.from >= 1) return { string: root.string, ...shape, open: null };
+  return { string: root.string, ...fitShape(index, root.fret + 12), open: fitShape(index, root.fret, OPEN_WINDOWS(root.fret)) };
 }
 
 /** The notes a voicing sounds, as MIDI numbers, low to high: guitarNotes([null, 3, 2, 0, 1, 0]) → [48, 52, 55, 60, 64] */

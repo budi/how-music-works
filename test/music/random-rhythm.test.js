@@ -1,15 +1,8 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { seeded } from '../helpers.js';
 import { parseRhythm } from '../../js/music/rhythm.js';
 import { randomBars, shortestNotes } from '../../js/music/random-rhythm.js';
-
-// the same "random" numbers every run
-function seeded(seed) {
-  return () => {
-    seed = (seed * 1664525 + 1013904223) % 4294967296;
-    return seed / 4294967296;
-  };
-}
 
 // many rhythms for one setting, parsed
 function many(time, level, { swing = false } = {}, n = 200) {

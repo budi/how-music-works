@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { seeded } from '../helpers.js';
 import { SEMITONES, SYLLABLES, degreeLabel, degreeMidis, degreeName, describeMove, distance, earQuestion } from '../../js/music/solfege.js';
 
 describe('the octave', () => {
@@ -45,8 +46,7 @@ describe('ear-check questions', () => {
   });
 
   it('never ask the same thing twice in a row, but come back to it later', () => {
-    let seed = 7;
-    const random = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+    const random = seeded(7);
     for (const direction of ['up', 'down']) {
       let previous;
       const seen = new Set();

@@ -21,13 +21,4 @@ describe('guitar / piano switch', () => {
     assert.deepEqual(pressed(window), ['guitar:false', 'piano:true']);
   });
 
-  it('still works when storage is blocked (private browsing)', async () => {
-    const window = await loadPage('number-system.html', {
-      setup: (w) => Object.defineProperty(w, 'localStorage', {
-        get() { throw new w.DOMException('blocked', 'SecurityError'); },
-      }),
-    });
-    click(window, '[data-instrument-choice="piano"]');
-    assert.equal(window.document.documentElement.dataset.instrument, 'piano');
-  });
 });

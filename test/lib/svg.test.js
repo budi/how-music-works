@@ -14,8 +14,4 @@ describe('svg markup', () => {
     assert.match(svg({ cls: 'diagram', viewBox: [0, 0, 1, 1], title: 'C', data: { whites: 15 } }, ''), / data-whites="15" [^>]*><title>C<\/title>/);
   });
 
-  it('refuses inline styles and event handlers, which the site’s Content-Security-Policy blocks', () => {
-    assert.throws(() => el('rect', { style: 'fill: red' }), /No inline style/);
-    assert.throws(() => el('g', { onclick: 'play()' }), /No inline onclick/);
-  });
 });

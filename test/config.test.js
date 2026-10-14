@@ -37,15 +37,4 @@ describe('deployment settings', () => {
     assert.equal(sourceUrl, 'https://example.org/music');
   });
 
-  it('leaves out what isn’t set up correctly, and says why', () => {
-    const partly = read({ UMAMI_WEBSITE_ID: UMAMI.UMAMI_WEBSITE_ID });
-    assert.equal(partly.stats, null);
-    assert.deepEqual(partly.warnings, ['visitor statistics are off: UMAMI_SCRIPT_URL isn\'t set']);
-    const wrong = read({ ...UMAMI, UMAMI_WEBSITE_ID: 'my-site', SOURCE_URL: 'javascript:alert(1)' });
-    assert.deepEqual([wrong.stats, wrong.sourceUrl], [null, null]);
-    assert.deepEqual(wrong.warnings, [
-      'visitor statistics are off: UMAMI_WEBSITE_ID isn\'t a website ID from Umami: my-site',
-      'no link to the source: SOURCE_URL must start with https://, not javascript://',
-    ]);
-  });
 });

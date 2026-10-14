@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { FLAVOURS } from '../../js/music/chords.js';
-import { STRINGS, barreFret, commonVoicing, formatFrets, fretPositions, guitarNotes, guitarShapes, majorShape, parseGuitar } from '../../js/music/guitar.js';
+import { STRINGS, barreFret, commonVoicing, formatFrets, fretPositions, guitarNotes, guitarShapes, intervalPosition, majorShape, parseGuitar, rootPosition } from '../../js/music/guitar.js';
 import { MAJOR_STEPS } from '../../js/music/keys.js';
 import { mod12, pitchClass } from '../../js/music/pitch.js';
 import { semitones } from '../../js/music/intervals.js';
@@ -86,6 +86,29 @@ describe('scales on the neck', () => {
   it('finds every place a note is played, open strings to fret 12', () => {
     assert.equal(where(fretPositions('E')), '6:0 6:12 5:7 4:2 3:9 2:5 1:0 1:12');
     assert.ok(fretPositions('Bb').every((p) => mod12(p.midi) === 10 && p.midi === STRINGS[6 - p.string] + p.fret));
+  });
+
+  it('puts every key’s root on string 6 or 5, away from the nut and not too high', () => {
+    assert.deepEqual(rootPosition('G'), { string: 6, fret: 3, midi: 43 });
+    assert.deepEqual(rootPosition('C'), { string: 5, fret: 3, midi: 48 });
+    assert.deepEqual(rootPosition('G', 4), { string: 4, fret: 5, midi: 55 });
+    for (const key of ROOTS) {
+      const { fret, midi } = rootPosition(key);
+      assert.ok(fret >= 2 && fret <= 8 && mod12(midi) === pitchClass(key), key);
+    }
+  });
+
+  it('finds each interval above a root close by, as the shapes players learn', () => {
+    const shapes = (key) => Array.from({ length: 13 }, (_, size) => {
+      const root = rootPosition(key);
+      const p = intervalPosition(root, size);
+      assert.equal(p.midi, root.midi + size, `${key} + ${size}`);
+      assert.equal(p.midi, STRINGS[6 - p.string] + p.fret);
+      return `${root.string - p.string}:${p.fret - root.fret}`;
+    }).join(' ');
+    // a 5th one string over and two frets up, an octave two over and two up
+    const usual = '0:0 0:1 0:2 1:-2 1:-1 1:0 1:1 1:2 2:-2 2:-1 2:0 2:1 2:2';
+    for (const key of ROOTS) assert.equal(shapes(key), usual, key);
   });
 
   it('plays every major scale as one shape per string, off the nut, the hand covering four frets', () => {

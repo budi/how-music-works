@@ -1,0 +1,84 @@
+{{#> layout
+    title="Intervals — seconds to octaves, major, minor and perfect"
+    styles=(list "player" "notes" "intervals")
+    script="intervals"
+    instrument=true}}
+
+{{#*inline "footer-note"}}
+  Every note is made in your browser — turn the volume down a little before your first Play.
+{{/inline}}
+
+<noscript><p class="noscript">The intervals and the ear training on this page are drawn and played with JavaScript — please turn it on.</p></noscript>
+
+<h1>Intervals</h1>
+<p class="lede">An interval is the distance between two notes. Musicians name it with a number and a word, like a <i>major 3rd</i> or a
+<i>perfect 5th</i>. The number comes from counting letters; the word says exactly how far apart the notes are.
+This page names every interval from a unison to an octave and shows each one on the staff, the piano and the guitar neck.
+Then it trains your ear to hear which of two intervals is bigger.</p>
+
+
+<!-- ================================================================== -->
+<h2>Count the letters</h2>
+<p>The number is how many letter names the interval spans, counting both ends. C up to E spans C, D and E: three letters, so it's a <b>3rd</b>.
+C up to G spans C D E F G: a <b>5th</b>. Two notes on the same letter are a <b>unison</b>, and the same letter eight letters up is an <b>octave</b>.</p>
+<p>Sharps and flats don't change the number. C to E♭ and C to E♯ both span C, D and E, so they're both 3rds. That's what the second word is for.</p>
+
+
+<!-- ================================================================== -->
+<h2>Then count the half steps</h2>
+<p>Intervals with the same number can be different sizes. C to E is 4 half steps; C to E♭ is 3. Both are 3rds, so the name adds how big it is:</p>
+<ul class="notes">
+  <li><b>Major</b> and <b>minor</b> are for 2nds, 3rds, 6ths and 7ths. The minor one is a half step smaller than the major one.</li>
+  <li><b>Perfect</b> is for unisons, 4ths, 5ths and octaves. They come in one usual size only.</li>
+  <li>The <b>tritone</b>, 6 half steps, is the one that's left: three whole steps, halfway to the octave.</li>
+</ul>
+<p>Every interval up to the octave, from C. Tap ▶ to hear it:</p>
+<div class="scroller">
+  <table class="iv-table" id="interval-table"></table>
+</div>
+<p>Musicians often write them short: a capital M for major, a small m for minor, P for perfect. The <a href="note-distance.html">note distance</a> page has a song
+to help you remember the sound of each one going up from do.</p>
+
+
+<!-- ================================================================== -->
+<h2>Where the names come from</h2>
+<p>Play the <a href="major-scale.html">major scale</a> from any note and measure from that note to each of the others. The 2, 3, 6 and 7
+come out <b>major</b>; the 4, 5 and the octave come out <b>perfect</b>. That's all the names mean: “major 3rd” is the 3rd you find in the major scale.
+Make a major interval a half step smaller and it becomes minor. Make a perfect one a half step bigger or smaller and it's no longer perfect:
+a 4th made bigger, or a 5th made smaller, is the tritone.</p>
+
+
+<!-- ================================================================== -->
+<h2>Any interval from any note</h2>
+<p>Pick a starting note and an interval. Tap a note to hear it, or play the two notes one after the other, then together.
+<span class="only-g">On the guitar, each interval is a shape you can move: the same distance across the strings and along the neck, wherever the first note is.</span>
+<span class="only-p">On the piano, count the half steps key by key, black keys included.</span></p>
+<div class="panel iv-explorer" id="interval-explorer"></div>
+
+
+<!-- ================================================================== -->
+<h2>Which is bigger?</h2>
+<p>Two intervals play, each starting from a different note, so comparing just the top notes won't help. Listen to the gap inside each one.
+Start on <b>easy</b>, where the sizes are far apart. Move on when you rarely miss. On <b>hard</b> they're only a half step or two apart.
+Playing the two notes together is harder still: listen for how open or crowded the pair sounds.</p>
+<div class="panel quiz ib-quiz" id="which-bigger"></div>
+
+
+<!-- ================================================================== -->
+<h2>Practise it</h2>
+<ol class="notes">
+  <li>Name the number first by counting letters, then the size by counting half steps. Do both every time until the names come by themselves.</li>
+  <li>In the explorer, keep the same interval and change the starting note. It always sounds the same distance.</li>
+  <li>Sing each interval up from a note you play, then check it with ▶.</li>
+  <li>Do a few rounds of <b>Which is bigger?</b> every day. When easy feels easy, try medium, then both notes together.</li>
+</ol>
+
+<h2>Worth remembering</h2>
+<ul class="notes">
+  <li>The number counts letters, both ends included; the word says the size.</li>
+  <li>2nds, 3rds, 6ths and 7ths are major or minor; unisons, 4ths, 5ths and octaves are perfect.</li>
+  <li>Measured up from the root of a major scale, every interval is major or perfect.</li>
+  <li>Minor is a half step smaller than major. The tritone, 6 half steps, sits between the 4th and the 5th.</li>
+</ul>
+
+{{/layout}}

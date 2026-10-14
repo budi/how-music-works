@@ -92,7 +92,6 @@
 @media (min-width: 561px) {
   .from-do th, .from-do td:nth-child(1), .from-do td:nth-child(2), .from-do td:nth-child(4) { white-space: nowrap; }
 }
-.scroller { overflow-x: auto; -webkit-overflow-scrolling: touch; } /* a table never widens the page */
 .from-do th:last-child, .from-do td:last-child { text-align: center; padding-right: 0; }
 .hear-it {
   width: 28px;

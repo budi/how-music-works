@@ -1,6 +1,6 @@
 /**
  * A quiz's score: questions answered right the first time, and how many in a
- * row. A question answered after a miss still counts as asked, and breaks the run.
+ * row. A miss breaks the run, and the question no longer counts as right.
  *
  * @example
  * const score = quizScore();
@@ -23,11 +23,11 @@ export function quizScore() {
     /** A wrong answer to this question. */
     miss() {
       missed = true;
+      streak = 0;
     },
     /** The right answer, at last or first time. */
     hit() {
-      if (missed) streak = 0;
-      else { right++; streak++; }
+      if (!missed) { right++; streak++; }
     },
     get text() {
       return `${right} of ${asked} right first time` + (streak > 1 ? ` · ${streak} in a row` : '') + '.';

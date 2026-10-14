@@ -7,23 +7,24 @@
  * @module pages/major-scale/explorer
  */
 import { CIRCLE_OF_FIFTHS, keySignature, scalePitches } from '../../music/keys.js';
-import { majorShape } from '../../music/guitar.js';
+import { STRING_2_CLOSER, majorShape } from '../../music/guitar.js';
 import { isBlackKey, keySpellings, pitchClass, printed } from '../../music/pitch.js';
 import { drawStaff } from '../../draw/staff.js';
 import { drawKeyboard } from '../../draw/keyboard.js';
 import { drawFretboard } from '../../draw/fretboard.js';
 import { melodyTimeline } from '../../audio/timeline.js';
 import { sharedPlayer } from '../../audio/player.js';
+import { choiceGroup, markChosen } from '../../ui/choices.js';
 import { currentInstrument } from '../../ui/instrument.js';
+import { wireNoteTaps } from '../../ui/tap-notes.js';
 import { transport } from '../../ui/transport.js';
-import { flash, sizeToDrawing } from '../../lib/dom.js';
+import { sizeToDrawing } from '../../lib/dom.js';
 import { scaleMidis, scaleNames, scaleRow } from './scale.js';
 
 // the twelve keys from C up, spelled as the circle of fifths spells them
 const KEYS = [...CIRCLE_OF_FIFTHS].sort((a, b) => pitchClass(a) - pitchClass(b));
 const COUNT = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
 const FINGERS = ['first', 'second', 'third', 'fourth'];
-const CLOSER = 'string 2 is tuned a half step closer to string 3 than the other strings are to their neighbours';
 
 // up the octave and back down: indexes into the eight notes of the scale
 const UP_AND_DOWN = [0, 1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1, 0];
@@ -46,8 +47,8 @@ function describeShape(shape) {
   const root = shape.notes[0];
   let out = `The root is on string ${root.string}, fret ${root.fret}: put your ${FINGERS[root.fret - shape.from]} finger there, ` +
     `and give each finger one fret, from ${shape.from} to ${shape.from + 3}.`;
-  if (shape.to > shape.from + 3) out += ` On string 2 the shape reaches one fret further, to ${shape.to}, for your little finger: ${CLOSER}.`;
-  else if (shape.notes.some((n) => n.string === 2)) out += ` Crossing onto string 2 moves the notes up a fret: ${CLOSER}.`;
+  if (shape.to > shape.from + 3) out += ` On string 2 the shape reaches one fret further, to ${shape.to}, for your little finger: ${STRING_2_CLOSER}.`;
+  else if (shape.notes.some((n) => n.string === 2)) out += ` Crossing onto string 2 moves the notes up a fret: ${STRING_2_CLOSER}.`;
   out += ` Slide the same shape along string ${root.string} to play any other major scale.`;
   if (shape.open) {
     const low = shape.open.notes[0];
@@ -65,25 +66,19 @@ const marks = (notes, cls) => notes.map((n) => ({
   cls: cls + (n.degree % 7 === 1 ? ' is-root' : ''),
 }));
 
-const buttons = (attr, values, text = String) =>
-  values.map((v) => `<button type="button" data-${attr}="${v}" aria-pressed="false">${text(v)}</button>`).join('');
-
-const pressed = (group, attr, value) =>
-  group.querySelectorAll(`[data-${attr}]`).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset[attr] === String(value))));
-
 export function setupExplorer(el) {
   let key = 'C';
   let rootString = null; // null: whichever suits the key, 6 or 5
   let shape; // from majorShape
   let midis; // { piano, guitar }: the scale's notes on each
   el.innerHTML =
-    `<div class="ms-pick" role="group" aria-label="Key">${buttons('key', KEYS, printed)}</div>` +
+    choiceGroup('Key', 'key', KEYS, { text: printed, cls: 'ms-pick' }) +
     '<div class="ms-scale"></div>' +
     '<p class="ms-about"></p>' +
     '<div class="staff-art ms-staff"></div>' +
     '<div class="keys-art ms-keys only-p"></div>' +
-    `<div class="ms-strings only-g" role="group" aria-label="Root on string"><span>Root on string</span>${buttons('string', [6, 5, 4, 3])}</div>` +
-    '<div class="ms-neck only-g"></div>' +
+    choiceGroup('Root on string', 'string', [6, 5, 4, 3], { cls: 'ms-strings only-g' }) +
+    '<div class="neck-art ms-neck only-g"></div>' +
     '<p class="ms-shape only-g"></p>' +
     '<div class="staff-controls ms-play"></div>';
   const $ = (selector) => el.querySelector(selector);
@@ -91,8 +86,8 @@ export function setupExplorer(el) {
   function show() {
     shape = majorShape(key, rootString);
     midis = { piano: scaleMidis(key, 'piano'), guitar: scaleMidis(key, 'guitar', shape) };
-    pressed($('.ms-pick'), 'key', key);
-    pressed($('.ms-strings'), 'string', shape.string);
+    markChosen(el, 'key', key);
+    markChosen(el, 'string', shape.string);
     $('.ms-scale').innerHTML = scaleRow(key);
     $('.ms-about').textContent = describeKey(key);
 
@@ -140,20 +135,14 @@ export function setupExplorer(el) {
   });
 
   el.addEventListener('click', (e) => {
-    const choice = e.target.closest('.ms-pick [data-key], .ms-strings [data-string]');
-    if (choice) {
-      sharedPlayer().stop();
-      if (choice.dataset.key) key = choice.dataset.key;
-      else rootString = Number(choice.dataset.string);
-      show();
-      return;
-    }
-    // a note tapped on any of the drawings: heard, and lit for a moment
-    const note = e.target.closest('.sn, .key, .spot');
-    if (!note) return;
-    sharedPlayer().strum(note.classList.contains('spot') ? 'guitar' : 'piano', [Number(note.dataset.midi)]);
-    flash(note, 'is-now', 700);
+    const choice = e.target.closest('.choices button');
+    if (!choice) return;
+    sharedPlayer().stop();
+    if (choice.dataset.key) key = choice.dataset.key;
+    else rootString = Number(choice.dataset.string);
+    show();
   });
+  wireNoteTaps(el);
 
   show();
 }

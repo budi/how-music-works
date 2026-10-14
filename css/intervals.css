@@ -1,0 +1,97 @@
+/*
+ * intervals.css — the intervals page: the table (js/pages/intervals/table.js),
+ * the explorer (explorer.js) and the which-is-bigger ear trainer (bigger.js).
+ * Staves, keys, the neck and the quiz card come from notes.css, play controls
+ * from player.css.
+ */
+
+/* ---------- every interval at a glance ---------- */
+
+.iv-table { border-collapse: collapse; font-size: 14px; width: 100%; margin: 6px 0 14px; }
+.iv-table th, .iv-table td { text-align: left; padding: 6px 14px 6px 0; border-bottom: 1px solid var(--rule); white-space: nowrap; }
+.iv-table thead th { font-size: 12px; color: var(--soft); font-weight: 600; }
+.iv-table tbody th { font-weight: 400; }
+.iv-table tbody th b { display: inline-block; min-width: 2.2em; }
+.iv-table .q-major b { color: var(--maj); }
+.iv-table .q-minor b { color: var(--min); }
+.iv-table .q-tritone b { color: var(--dim); }
+.iv-hear {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.iv-hear svg { width: 9px; height: 9px; fill: currentColor; margin-left: 1px; }
+.iv-hear.is-sounding { background: var(--now); border-color: var(--now); color: var(--paper); }
+
+/* ---------- any interval from any note ---------- */
+
+.iv-sizes { margin-top: 8px; }
+.iv-name { font-size: 18px; margin: 14px 0 2px; }
+.iv-count, .iv-quality, .iv-reach { font-size: 14px; color: var(--soft); margin: 2px 0; }
+.iv-staff { margin: 8px 0; }
+.iv-strings { margin: 4px 0 0; }
+.iv-explorer .rhythm-controls { margin: 10px 0 0; }
+
+/* ---------- which is bigger? ---------- */
+
+.ib-again {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  font-weight: 600;
+  cursor: pointer;
+}
+.ib-again:disabled { cursor: default; opacity: .45; }
+.ib-ask { font-size: 15px; margin: 14px 0 10px; }
+.ib-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 420px; }
+.ib-answer {
+  padding: 10px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  line-height: 1.3;
+}
+.ib-answer { font-size: 17px; font-weight: 650; }
+.ib-answer:disabled { cursor: default; }
+.ib-answer.is-now { border-color: var(--now); box-shadow: inset 0 0 0 1px var(--now); }
+.ib-answer.is-right { background: var(--maj); border-color: var(--maj); color: var(--paper); }
+.ib-answer.is-wrong { background: #e8c4b8; border-color: var(--dim); }
+
+/* once answered: each interval, named, a ▶ to hear it alone, and a bar as long
+   as it is, the bigger one's extra length in colour (lengths: js/pages/intervals/bigger.js) */
+.ib-reveal { margin: 14px 0 0; display: grid; gap: 10px; max-width: 560px; }
+.ib-row {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  grid-template-areas: "play what size" "play bar bar";
+  gap: 4px 10px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+.ib-row.is-now { background: var(--paper); }
+.ib-row .iv-hear { grid-area: play; }
+.ib-what { grid-area: what; font-size: 14px; }
+.ib-size { grid-area: size; font-size: 13px; color: var(--soft); white-space: nowrap; }
+.ib-size b { color: var(--ink); }
+.ib-bar { grid-area: bar; display: flex; height: 8px; border-radius: 4px; background: var(--paper); overflow: hidden; }
+.ib-bar i { width: calc(var(--base, 0) * 100% / 12); background: var(--min); }
+.ib-bar em { width: calc(var(--extra, 0) * 100% / 12); background: var(--now); }
+@media (max-width: 480px) {
+  .ib-row { grid-template-columns: 26px 1fr; grid-template-areas: "play what" "play size" "play bar"; }
+}
+.ib-quiz .quiz-result, .ib-quiz .quiz-score { text-align: left; }
+
+@media print {
+  .iv-explorer .rhythm-controls, .iv-hear { display: none; }
+}

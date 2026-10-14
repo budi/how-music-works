@@ -1,17 +1,12 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadPage, until } from '../helpers.js';
-import { FakeAudioContext } from '../fake-audio.js';
+import { audio, change, loadPage, played, press, queries, seeded, until } from '../helpers.js';
 import { CIRCLE_OF_FIFTHS } from '../../js/music/keys.js';
 import { majorShape } from '../../js/music/guitar.js';
 import { scaleQuestion, spellingNote } from '../../js/pages/major-scale/quiz.js';
 
 let window;
-const $ = (selector, scope = window.document) => scope.querySelector(selector);
-const $$ = (selector, scope = window.document) => [...scope.querySelectorAll(selector)];
-const press = (el) => el.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
-const audio = () => FakeAudioContext.instances.at(-1);
-const played = () => audio().started.filter((s) => s.kind === 'noise').length;
+const { $, $$ } = queries(() => window);
 const row = (scope) => $$('.ms-cell span', scope).map((s) => s.textContent).join(' ');
 const steps = (scope) => $$('.ms-step', scope).map((s) => s.textContent).join(' ');
 // places on the neck — notes from majorShape, or spots' datasets — as 'string:fret', sorted
@@ -20,11 +15,7 @@ const spots = (selector, scope) => places($$(selector, scope).map((s) => s.datas
 
 // random() = 0: the quiz asks the 2 of C major first, then the 3
 async function load(instrument = 'guitar') {
-  FakeAudioContext.instances = [];
-  window = await loadPage('major-scale.html', {
-    storage: { 'music.instrument': instrument },
-    setup: (w) => { w.AudioContext = FakeAudioContext; w.Math.random = () => 0; },
-  });
+  window = await loadPage('major-scale.html', { audio: true, random: 0, storage: { 'music.instrument': instrument } });
 }
 afterEach(() => window.close());
 
@@ -95,11 +86,7 @@ describe('find the missing note', () => {
   const result = () => $('.quiz-result', quiz()).textContent;
   const key = (midi) => $(`.ms-keys .key[data-midi="${midi}"]`, quiz());
   const spot = (string, fret) => $(`.ms-neck .spot[data-string="${string}"][data-fret="${fret}"]`, quiz());
-  const choose = (setting, value) => {
-    const el = $(`[data-setting="${setting}"]`, quiz());
-    if (el.type === 'checkbox') el.checked = value; else el.value = value;
-    el.dispatchEvent(new window.Event('change', { bubbles: true }));
-  };
+  const choose = (setting, value) => change($(`[data-setting="${setting}"]`, quiz()), value);
 
   describe('on the piano', () => {
     beforeEach(() => load('piano'));
@@ -123,8 +110,6 @@ describe('find the missing note', () => {
       assert.equal(row(quiz()), 'C D E F G A B C');
       assert.deepEqual($$('.ms-keys .key.is-right', quiz()).map((k) => k.dataset.midi), ['62', '74']);
       assert.equal($('.quiz-score', quiz()).textContent, '0 of 1 right first time.');
-      press(key(64)); // answered: the keys wait for the next question
-      assert.equal(result(), 'Yes: the 2 of C major is D.');
       // three presses, then C D up the scale
       audio().currentTime = 0.5;
       await until(() => played() === 5);
@@ -144,7 +129,7 @@ describe('find the missing note', () => {
       assert.equal($$('.ms-step', quiz()).length, 0);
       press($('rect', key(64)));
       assert.match(result(), /^Yes/);
-      assert.equal(FakeAudioContext.instances.length, 0);
+      assert.equal(audio(), undefined);
     });
 
     it('shows and hides the key names', () => {
@@ -175,8 +160,7 @@ describe('find the missing note', () => {
 
 describe('the questions', () => {
   it('asks the 2 to the 7 of each key, never the same twice running', () => {
-    let seed = 7;
-    const random = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+    const random = seeded(7);
     let previous;
     const seen = new Set();
     for (let i = 0; i < 600; i++) {

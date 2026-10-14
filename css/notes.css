@@ -54,6 +54,10 @@ svg.staff { display: block; height: auto; max-width: 100%; overflow: visible; }
 
 /* ---------- the guitar neck ---------- */
 
+/* at its real size where there's room, never so small it's hard to tap: on a phone it scrolls sideways */
+.neck-art { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 6px 0 4px; }
+.neck-art svg { width: clamp(calc(var(--w, 510) * 0.9px), 100%, calc(var(--w, 510) * 1.3px)); max-width: none; }
+
 svg.fretboard { display: block; height: auto; max-width: 100%; }
 .fretboard .board { fill: #e3d9c8; }
 .fretboard .nut { fill: var(--ink); }
@@ -74,9 +78,12 @@ svg.fretboard { display: block; height: auto; max-width: 100%; }
 .fretboard .sname { display: none; font-size: 9px; font-weight: 600; fill: #7d725f; paint-order: stroke; stroke: #e3d9c8; stroke-width: 3px; text-anchor: middle; font-family: inherit; pointer-events: none; }
 .show-names .fretboard .sname { display: inline; }
 
+/* ---------- a card holding an explorer or a quiz ---------- */
+
+.panel { background: var(--card); border-radius: 4px; padding: 14px; margin: 0 0 18px; }
+
 /* ---------- a quiz answered on the keys or the neck ---------- */
 
-.quiz { background: var(--card); border-radius: 4px; padding: 14px; margin: 0 0 18px; }
 /* where you answer: as wide as there's room for, but keys never narrower than
    20px — on a phone it scrolls sideways instead */
 .quiz-pad { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
@@ -99,6 +106,6 @@ svg.fretboard { display: block; height: auto; max-width: 100%; }
 .quiz-score { font-size: 12.5px; color: var(--soft); margin: 0; text-align: center; }
 
 @media print {
-  .staff-fig, .keys-fig { background: none; }
+  .staff-fig, .keys-fig, .panel { background: none; }
   .staff-controls, .quiz { display: none; }
 }

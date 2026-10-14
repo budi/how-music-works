@@ -1,16 +1,13 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadPage, click, texts, until } from '../helpers.js';
-import { FakeAudioContext } from '../fake-audio.js';
+import { audio, click, loadPage, played, press, queries, texts, until } from '../helpers.js';
 import { guitarNotes, guitarShapes } from '../../js/music/guitar.js';
 
 let window;
-const $ = (selector) => window.document.querySelector(selector);
-const $$ = (selector) => [...window.document.querySelectorAll(selector)];
+const { $, $$ } = queries(() => window);
 
 beforeEach(async () => {
-  FakeAudioContext.instances = [];
-  window = await loadPage('number-system.html', { setup: (w) => { w.AudioContext = FakeAudioContext; } });
+  window = await loadPage('number-system.html', { audio: true });
 });
 // a playing progression keeps timers running; closing the window stops them
 afterEach(() => window.close());
@@ -199,9 +196,6 @@ describe('progression builder', () => {
 });
 
 describe('hearing the chords', () => {
-  const audio = () => FakeAudioContext.instances.at(-1);
-  const played = () => audio().started.filter((x) => x.kind === 'noise').length;
-  const press = (el) => el.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
 
   it('puts a play button on every chord: table, circle, galleries, chart', () => {
     for (const chord of $$('#key-table td, #circle-of-fifths .cc, .shape, .xchart .xcell')) assert.ok(chord.querySelector('.chord-play'), chord.outerHTML);
@@ -209,7 +203,7 @@ describe('hearing the chords', () => {
   });
 
   it('plays what the diagram shows, for the instrument showing, lighting the button', () => {
-    assert.equal(FakeAudioContext.instances.length, 0, 'no sound before a click');
+    assert.equal(audio(), undefined, 'no sound before a click');
     const c = $('#key-table td'); // C: x 3 2 0 1 0 on guitar, C E G on piano
     assert.equal(c.dataset.playG, '48 52 55 60 64');
     assert.equal(c.dataset.playP, '60 64 67');
@@ -238,9 +232,7 @@ describe('hearing the chords', () => {
 });
 
 describe('playing the progression', () => {
-  const audio = () => FakeAudioContext.instances.at(-1);
   const play = () => $('.xplay .rhythm-play');
-  const press = (el) => el.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
   const lit = () => $$('.xchart .xcell').map((c, i) => (c.classList.contains('is-now') ? i : -1)).filter((i) => i >= 0);
 
   it('counts in, then lights each chord as it plays, and loops', async () => {

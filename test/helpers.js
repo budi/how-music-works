@@ -19,6 +19,7 @@ import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
 import { JSDOM } from 'jsdom';
 import { renderPage } from '../scripts/render.js';
+import { FakeAudioContext } from './fake-audio.js';
 
 const projectRoot = new URL('../', import.meta.url);
 const isExternal = (src) => /^([a-z]+:)?\/\//i.test(src);
@@ -42,10 +43,12 @@ async function runModule(url, context) {
 }
 
 // Options:
+//   audio   — play through a FakeAudioContext (see audio() and played() below)
+//   random  — what Math.random() always returns, so the page's choices are known
 //   storage — localStorage entries to set before the scripts run
 //   setup   — function(window) run before the scripts, e.g. to stub APIs or add markup
 //   root    — folder (file: URL) holding built pages to load instead, e.g. dist/
-export async function loadPage(file, { storage = {}, setup, root = projectRoot } = {}) {
+export async function loadPage(file, { audio = false, random, storage = {}, setup, root = projectRoot } = {}) {
   const built = root !== projectRoot;
   const dom = new JSDOM(built ? read(file, root) : renderPage(file), {
     url: 'http://localhost/' + file,
@@ -54,6 +57,11 @@ export async function loadPage(file, { storage = {}, setup, root = projectRoot }
   });
   const { window } = dom;
   for (const [key, value] of Object.entries(storage)) window.localStorage.setItem(key, value);
+  if (audio) {
+    FakeAudioContext.instances = [];
+    window.AudioContext = FakeAudioContext;
+  }
+  if (random != null) window.Math.random = () => random;
   if (setup) setup(window);
 
   // jsdom has parsed the page and will fire DOMContentLoaded by itself; hold
@@ -86,11 +94,44 @@ export async function until(check, ms = 3000) {
   return true;
 }
 
+// Shorthands for the page a test has loaded, whichever it is at the time:
+//   const { $, $$, text } = queries(() => window);
+export function queries(page) {
+  const $ = (selector, scope = page().document) => scope.querySelector(selector);
+  const $$ = (selector, scope = page().document) => [...scope.querySelectorAll(selector)];
+  return { $, $$, text: (selector, scope) => $(selector, scope).textContent };
+}
+
+// A tap on an element.
+export function press(el) {
+  el.dispatchEvent(new el.ownerDocument.defaultView.MouseEvent('click', { bubbles: true }));
+}
+
+// A tap on what `selector` finds on the page.
 export function click(window, selector) {
   const el = window.document.querySelector(selector);
   if (!el) throw new Error('Nothing matches ' + selector);
-  el.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  press(el);
 }
 
 export const texts = (window, selector) =>
   [...window.document.querySelectorAll(selector)].map((el) => el.textContent.trim());
+
+// A menu picked from, or a box ticked: change(select, 'hard'), change(checkbox, false).
+export function change(el, value) {
+  if (el.type === 'checkbox') el.checked = value;
+  else el.value = value;
+  el.dispatchEvent(new el.ownerDocument.defaultView.Event('change', { bubbles: true }));
+}
+
+// The page's sound, with loadPage's `audio` option: the audio context, and how many notes it has started.
+export const audio = () => FakeAudioContext.instances.at(-1);
+export const played = () => audio().started.filter((s) => s.kind === 'noise').length;
+
+// A stand-in for Math.random that gives the same numbers every run, from `seed`.
+export function seeded(seed) {
+  return () => {
+    seed = (seed * 1664525 + 1013904223) % 4294967296;
+    return seed / 4294967296;
+  };
+}

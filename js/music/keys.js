@@ -3,9 +3,8 @@
  *
  * @module music/keys
  */
-import { transpose } from './intervals.js';
+import { pitchAbove, transpose } from './intervals.js';
 import { chordName } from './chords.js';
-import { LETTERS } from './pitch.js';
 
 /** The seven chords of every major key, in order. This row never changes. */
 export const DEGREES = [
@@ -37,8 +36,7 @@ export const MAJOR_STEPS = [2, 2, 1, 2, 2, 2, 1];
  * scalePitches('G') → ['G4', 'A4', 'B4', 'C5', 'D5', 'E5', 'F#5', 'G5']
  */
 export function scalePitches(key) {
-  const first = LETTERS.indexOf(key[0]);
-  return [...majorScale(key), key].map((name, i) => name + (4 + Math.floor((first + i) / 7)));
+  return [...DEGREES.map((d) => d.interval), '8'].map((interval) => pitchAbove(key + '4', interval));
 }
 
 /** The seven chords of a key, in order: [{ degree, root, quality, name }] */

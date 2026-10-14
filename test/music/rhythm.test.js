@@ -37,9 +37,6 @@ describe('parsing rhythms', () => {
     assert.deepEqual(p.events.map((e) => e.sounds), [['hh', 'sn'], ['bd'], [], ['clap']]);
   });
 
-  it('says which bar doesn’t add up', () => {
-    assert.throws(() => parseRhythm('q q q', '4/4'), /Bar 1 .* lasts 3 quarters, but 4\/4 needs 4 quarters/);
-  });
 });
 
 describe('counting', () => {

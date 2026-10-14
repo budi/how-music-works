@@ -1,5 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
+import { seeded } from '../../helpers.js';
 import { naturals, parsePitch } from '../../../js/music/pitch.js';
 import { RANGE, noteQuestion } from '../../../js/pages/reading-notes/quiz.js';
 
@@ -15,8 +16,7 @@ describe('quiz questions', () => {
   });
 
   it('never repeats the note just asked, and covers the whole range', () => {
-    let seed = 3;
-    const random = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+    const random = seeded(3);
     for (const clef of ['treble', 'bass', 'both']) {
       let previous;
       const seen = new Set();

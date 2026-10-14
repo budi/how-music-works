@@ -12,15 +12,9 @@
 import { drawStaff } from '../../draw/staff.js';
 import { drawKeyboard } from '../../draw/keyboard.js';
 import { melodyTimeline } from '../../audio/timeline.js';
-import { sharedPlayer } from '../../audio/player.js';
+import { wireNoteTaps } from '../../ui/tap-notes.js';
 import { transport } from '../../ui/transport.js';
-import { flash, sizeToDrawing } from '../../lib/dom.js';
-
-// a note or key tapped: heard, and lit for a moment
-function tapped(el) {
-  sharedPlayer().strum('piano', [Number(el.dataset.midi)]);
-  flash(el, 'is-now', 700);
-}
+import { sizeToDrawing } from '../../lib/dom.js';
 
 export function setupStaffFigure(fig) {
   const d = fig.dataset;
@@ -30,10 +24,7 @@ export function setupStaffFigure(fig) {
   const notes = [...art.querySelectorAll('.sn')];
   const light = (index) => notes.forEach((n) => n.classList.toggle('is-now', Number(n.dataset.i) === index));
 
-  art.addEventListener('click', (e) => {
-    const note = e.target.closest('.sn');
-    if (note) tapped(note);
-  });
+  wireNoteTaps(art);
   const controls = fig.querySelector('.staff-controls');
   if (controls) {
     transport(controls, {
@@ -52,8 +43,5 @@ export function setupKeysFigure(fig) {
   const art = fig.querySelector('.keys-art');
   art.innerHTML = drawKeyboard({ from, to, marks, highlight });
   sizeToDrawing(art);
-  fig.addEventListener('click', (e) => {
-    const key = e.target.closest('.key');
-    if (key) tapped(key);
-  });
+  wireNoteTaps(fig);
 }

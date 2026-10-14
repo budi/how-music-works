@@ -1,20 +1,16 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { setTimeout as wait } from 'node:timers/promises';
-import { loadPage, click, until } from '../helpers.js';
-import { FakeAudioContext } from '../fake-audio.js';
+import { audio, change, click, loadPage, press, queries, until } from '../helpers.js';
 import { parseRhythm } from '../../js/music/rhythm.js';
 import { rhythmTimeline } from '../../js/audio/timeline.js';
 
 let window;
-const $ = (selector, scope = window.document) => scope.querySelector(selector);
-const $$ = (selector, scope = window.document) => [...scope.querySelectorAll(selector)];
+const { $, $$ } = queries(() => window);
 const exercise = (name) => $$('figure.rhythm').find((f) => f.querySelector('figcaption b').textContent === name);
-const audio = () => FakeAudioContext.instances.at(-1);
 
 beforeEach(async () => {
-  FakeAudioContext.instances = [];
-  window = await loadPage('beats-101.html', { setup: (w) => { w.AudioContext = FakeAudioContext; } });
+  window = await loadPage('beats-101.html', { audio: true });
 });
 // a playing exercise keeps timers running; closing the window stops them
 afterEach(() => window.close());
@@ -93,12 +89,8 @@ describe('sight-reading (made-up rhythms)', () => {
   const lines = () => $$('.rhythm-line', fig());
   const drawn = () => lines().map((l) => l.querySelector('svg'));
   const width = (svg) => Number(svg.getAttribute('viewBox').split(' ')[2]);
-  const press = (selector) => $(selector, fig()).dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
-  const choose = (setting, value) => {
-    const select = $(`select[data-setting="${setting}"]`, fig());
-    select.value = value;
-    select.dispatchEvent(new window.Event('change', { bubbles: true }));
-  };
+  const tap = (selector) => press($(selector, fig()));
+  const choose = (setting, value) => change($(`select[data-setting="${setting}"]`, fig()), value);
 
   it('draws eight bars on two lines of four, each as two scores of two bars, counted', () => {
     assert.equal(lines().length, 2);
@@ -133,7 +125,7 @@ describe('sight-reading (made-up rhythms)', () => {
       box.dispatchEvent(new window.Event('change', { bubbles: true }));
     });
     const first = drawn();
-    press('.rhythm-play');
+    tap('.rhythm-play');
     const line = 4 * 4 * 60 / 72; // four bars of 4/4 at 72: 13.33 s
 
     audio().currentTime = 1;
@@ -152,18 +144,18 @@ describe('sight-reading (made-up rhythms)', () => {
     assert.equal(third[0], second[0], 'bars 1-4 stay while they play');
     assert.notEqual(third[1], second[1], 'bars 5-8 are new');
     assert.ok($$('.is-now', lines()[0]).length > 0, 'and bar 1 lights up');
-    press('.rhythm-play');
+    tap('.rhythm-play');
   });
 
   it('makes up a new rhythm on request, keeps playing it from bar 1', () => {
     const before = drawn();
-    press('.rhythm-play');
-    press('.rhythm-new');
+    tap('.rhythm-play');
+    tap('.rhythm-new');
     const after = drawn();
     assert.notEqual(after[0], before[0]);
     assert.notEqual(after[1], before[1]);
     assert.equal($('.rhythm-play', fig()).getAttribute('aria-pressed'), 'true');
-    press('.rhythm-play');
+    tap('.rhythm-play');
   });
 
   it('hides the counts on request, and keeps them hidden for new bars', () => {
@@ -175,7 +167,7 @@ describe('sight-reading (made-up rhythms)', () => {
     box.dispatchEvent(new window.Event('change', { bubbles: true }));
     assert.ok(fig().classList.contains('hide-counts'));
     assert.deepEqual(drawn(), before, 'the same rhythm, just without its counts');
-    press('.rhythm-new');
+    tap('.rhythm-new');
     assert.ok(fig().classList.contains('hide-counts'), 'still hidden for a new rhythm');
     assert.ok($$('.count', fig()).length > 0, 'drawn, but hidden by CSS');
     box.checked = true;
@@ -215,17 +207,17 @@ describe('sight-reading (made-up rhythms)', () => {
     // bars 1-4 as written, swung or not: new bars until swing changes them
     const notes = (swing) => rhythmTimeline({ a: parseRhythm(lines()[0].dataset.pattern, '4/4') }, { bpm: 60, swing })
       .notes.map((n) => Math.round(n.at * 1000));
-    for (let k = 0; k < 20 && String(notes(true)) === String(notes(false)); k++) press('.rhythm-new');
+    for (let k = 0; k < 20 && String(notes(true)) === String(notes(false)); k++) tap('.rhythm-new');
     const swung = notes(true);
     assert.notDeepEqual(swung, notes(false));
 
-    press('.rhythm-play');
+    tap('.rhythm-play');
     audio().currentTime = 16; // bars 1-4 played
     const claps = () => audio().started.filter((s) => s.type === 'triangle' && s.frequency === 900)
       .map((s) => Math.round((s.at - 0.08) * 1000)).filter((ms) => ms < 16000); // from the first note, 0.08 s in
     await until(() => claps().length >= swung.length);
     assert.deepEqual(claps(), swung);
-    press('.rhythm-play');
+    tap('.rhythm-play');
   });
 
   it('only swings simple time: a swing level moves 6/8 to 4/4, and takes it off the menu', () => {

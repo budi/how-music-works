@@ -1,21 +1,15 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadPage, until } from '../helpers.js';
-import { FakeAudioContext } from '../fake-audio.js';
+import { audio, change, loadPage, played, press, queries, until } from '../helpers.js';
 import { parsePitch } from '../../js/music/pitch.js';
 
 let window;
-const $ = (selector, scope = window.document) => scope.querySelector(selector);
-const $$ = (selector, scope = window.document) => [...scope.querySelectorAll(selector)];
-const press = (el) => el.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+const { $, $$ } = queries(() => window);
 const figure = (name) => $$('figure.staff-fig').find((f) => $('figcaption b', f).textContent === name);
-const audio = () => FakeAudioContext.instances.at(-1);
-const played = () => audio().started.filter((s) => s.kind === 'noise').length;
 
 // random() = 0, so the quiz asks the lowest note it can, then the next one up
 beforeEach(async () => {
-  FakeAudioContext.instances = [];
-  window = await loadPage('reading-notes.html', { setup: (w) => { w.AudioContext = FakeAudioContext; w.Math.random = () => 0; } });
+  window = await loadPage('reading-notes.html', { audio: true, random: 0 });
 });
 afterEach(() => window.close());
 
@@ -38,7 +32,7 @@ describe('staff diagrams', () => {
   });
 
   it('plays a note when you tap it, and lights it', () => {
-    assert.equal(FakeAudioContext.instances.length, 0, 'no sound before a tap');
+    assert.equal(audio(), undefined, 'no sound before a tap');
     const note = $('.sn', figure('The lines: E G B D F'));
     press($('.head', note));
     assert.equal(played(), 1);
@@ -89,11 +83,7 @@ describe('the note quiz', () => {
   const key = (midi) => $(`.nq-keys .key[data-midi="${midi}"]`, quiz());
   const pressKey = (midi) => press($('rect', key(midi)));
   const result = () => $('.quiz-result', quiz()).textContent;
-  const choose = (setting, value) => {
-    const el = $(`[data-setting="${setting}"]`, quiz());
-    if (el.type === 'checkbox') el.checked = value; else el.value = value;
-    el.dispatchEvent(new window.Event('change', { bubbles: true }));
-  };
+  const choose = (setting, value) => change($(`[data-setting="${setting}"]`, quiz()), value);
   const keyNames = () => $$('.nq-keys .key', quiz()).filter((k) => $('.kw', k)).map((k) => k.dataset.name);
 
   it('shows a note with no name, and a keyboard to answer on', () => {
@@ -163,6 +153,6 @@ describe('the note quiz', () => {
   it('can stay quiet', () => {
     choose('sound', false);
     pressKey(55);
-    assert.equal(FakeAudioContext.instances.length, 0);
+    assert.equal(audio(), undefined);
   });
 });

@@ -79,7 +79,7 @@ export function setupQuiz(el) {
     '<p class="ms-ask" aria-live="polite"></p>' +
     '<div class="ms-given"></div>' +
     '<div class="quiz-pad ms-keys only-p show-names"></div>' +
-    '<div class="quiz-pad ms-neck only-g show-names"></div>' +
+    '<div class="quiz-pad neck-art ms-neck only-g show-names"></div>' +
     '<p class="quiz-result" aria-live="polite"></p>' +
     '<p class="ms-next-row"><button type="button" class="rhythm-play ms-next" hidden>Next note</button></p>' +
     '<p class="quiz-score">Find the note <span class="only-p">on the keys, in any octave</span><span class="only-g">on the neck, on any string</span>.</p>';

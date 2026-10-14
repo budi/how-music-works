@@ -1,15 +1,10 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import { loadPage, texts, until } from '../helpers.js';
-import { FakeAudioContext } from '../fake-audio.js';
+import { audio, loadPage, played, press, queries, texts, until } from '../helpers.js';
 
 let window;
-const $ = (selector, scope = window.document) => scope.querySelector(selector);
-const $$ = (selector, scope = window.document) => [...scope.querySelectorAll(selector)];
-const press = (el) => el.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+const { $, $$ } = queries(() => window);
 const exercise = (name) => $$('figure.interval-ex').find((f) => $('figcaption b', f).textContent === name);
-const audio = () => FakeAudioContext.instances.at(-1);
-const played = () => audio().started.filter((s) => s.kind === 'noise').length;
 // the player schedules a moment ahead: move its clock on until `n` notes have sounded
 async function heard(n) {
   audio().currentTime += 1.5;
@@ -19,11 +14,7 @@ async function heard(n) {
 
 // random() = 0 everywhere, so the ear check always asks do → re (or high do → do)
 async function load(storage = {}) {
-  FakeAudioContext.instances = [];
-  window = await loadPage('note-distance.html', {
-    storage,
-    setup: (w) => { w.AudioContext = FakeAudioContext; w.Math.random = () => 0; },
-  });
+  window = await loadPage('note-distance.html', { audio: true, random: 0, storage });
 }
 
 beforeEach(() => load());
